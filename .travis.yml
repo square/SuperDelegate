@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode7.3
+before_script:
+    - bundle install
+script:
+    - xcodebuild -project SuperDelegate.xcodeproj -scheme "SuperDelegate" -sdk iphonesimulator -configuration Debug -PBXBuildsContinueAfterErrors=0 build test
+    - pod lib lint --verbose --fail-fast

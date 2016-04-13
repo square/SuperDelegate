@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EA47167E1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA47167D1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift */; };
+		EA4716801CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA47167F1CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift */; };
+		EA4716821CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4716811CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift */; };
+		EA4716841CC5F36400DE3B99 /* SuperDelegate+WatchKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4716831CC5F36400DE3B99 /* SuperDelegate+WatchKitTests.swift */; };
+		EA5B32121CD03F1F001080DC /* LaunchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5B32111CD03F1F001080DC /* LaunchItem.swift */; };
+		EA626DF41CC5FF6900E5CEFD /* SuperDelegate+UserNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA626DF31CC5FF6900E5CEFD /* SuperDelegate+UserNotificationsTests.swift */; };
+		EA65F9921CBF06EB00CBA8E3 /* SuperDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = EA65F9911CBF06EB00CBA8E3 /* SuperDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EA65F9991CBF06EB00CBA8E3 /* SuperDelegate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA65F98E1CBF06EB00CBA8E3 /* SuperDelegate.framework */; };
+		EA65F99E1CBF06EB00CBA8E3 /* SuperDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F99D1CBF06EB00CBA8E3 /* SuperDelegateTests.swift */; };
+		EA65F9A91CBF070100CBA8E3 /* SuperDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65F9A81CBF070100CBA8E3 /* SuperDelegate.swift */; };
+		EAB48E421CCFD5EC0053E7FB /* SuperDelegate+Handoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB48E411CCFD5EC0053E7FB /* SuperDelegate+Handoff.swift */; };
+		EAD4E93D1CC0362E005D8983 /* RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E93C1CC0362E005D8983 /* RemoteNotification.swift */; };
+		EAD4E9411CC18D16005D8983 /* RemoteNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9401CC18D16005D8983 /* RemoteNotificationTests.swift */; };
+		EAD4E9451CC429FC005D8983 /* SuperDelegate+RemoteNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9441CC429FC005D8983 /* SuperDelegate+RemoteNotifications.swift */; };
+		EAD4E9471CC4332E005D8983 /* SuperDelegate+UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9461CC4332E005D8983 /* SuperDelegate+UserNotifications.swift */; };
+		EAD4E9491CC433CB005D8983 /* SuperDelegate+LocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9481CC433CB005D8983 /* SuperDelegate+LocalNotifications.swift */; };
+		EAD4E94B1CC43443005D8983 /* SuperDelegate+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E94A1CC43443005D8983 /* SuperDelegate+Shortcuts.swift */; };
+		EAD4E94D1CC43514005D8983 /* SuperDelegate+WatchKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E94C1CC43514005D8983 /* SuperDelegate+WatchKit.swift */; };
+		EAD4E94F1CC436D1005D8983 /* SuperDelegate+StateRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E94E1CC436D1005D8983 /* SuperDelegate+StateRestoration.swift */; };
+		EAD4E9511CC437A3005D8983 /* SuperDelegate+Bluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9501CC437A3005D8983 /* SuperDelegate+Bluetooth.swift */; };
+		EAD4E9531CC437E7005D8983 /* SuperDelegate+LocationEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9521CC437E7005D8983 /* SuperDelegate+LocationEvents.swift */; };
+		EAD4E9551CC4381E005D8983 /* SuperDelegate+UserActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9541CC4381E005D8983 /* SuperDelegate+UserActivity.swift */; };
+		EAD4E9571CC46B2A005D8983 /* SuperDelegate+OpenURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9561CC46B2A005D8983 /* SuperDelegate+OpenURL.swift */; };
+		EAD4E9591CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9581CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift */; };
+		EAD4E95B1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E95A1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift */; };
+		EAD4E95D1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E95C1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift */; };
+		EAD4E95F1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E95E1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift */; };
+		EAD4E9611CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD4E9601CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EA65F99A1CBF06EB00CBA8E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA65F9851CBF06EB00CBA8E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA65F98D1CBF06EB00CBA8E3;
+			remoteInfo = SuperDelegate;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DCD068281CC6E32F00EC892D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		EA47167D1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+ShortcutsTests.swift"; sourceTree = "<group>"; };
+		EA47167F1CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+StateRestorationTests.swift"; sourceTree = "<group>"; };
+		EA4716811CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+UserActivityTests.swift"; sourceTree = "<group>"; };
+		EA4716831CC5F36400DE3B99 /* SuperDelegate+WatchKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+WatchKitTests.swift"; sourceTree = "<group>"; };
+		EA5B32111CD03F1F001080DC /* LaunchItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchItem.swift; sourceTree = "<group>"; };
+		EA626DF31CC5FF6900E5CEFD /* SuperDelegate+UserNotificationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+UserNotificationsTests.swift"; sourceTree = "<group>"; };
+		EA65F98E1CBF06EB00CBA8E3 /* SuperDelegate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SuperDelegate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA65F9911CBF06EB00CBA8E3 /* SuperDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperDelegate.h; sourceTree = "<group>"; };
+		EA65F9931CBF06EB00CBA8E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA65F9981CBF06EB00CBA8E3 /* SuperDelegateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperDelegateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA65F99D1CBF06EB00CBA8E3 /* SuperDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperDelegateTests.swift; sourceTree = "<group>"; };
+		EA65F99F1CBF06EB00CBA8E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA65F9A81CBF070100CBA8E3 /* SuperDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperDelegate.swift; sourceTree = "<group>"; };
+		EAB48E411CCFD5EC0053E7FB /* SuperDelegate+Handoff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+Handoff.swift"; sourceTree = "<group>"; };
+		EAD4E93C1CC0362E005D8983 /* RemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotification.swift; sourceTree = "<group>"; };
+		EAD4E9401CC18D16005D8983 /* RemoteNotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationTests.swift; sourceTree = "<group>"; };
+		EAD4E9441CC429FC005D8983 /* SuperDelegate+RemoteNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+RemoteNotifications.swift"; sourceTree = "<group>"; };
+		EAD4E9461CC4332E005D8983 /* SuperDelegate+UserNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+UserNotifications.swift"; sourceTree = "<group>"; };
+		EAD4E9481CC433CB005D8983 /* SuperDelegate+LocalNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+LocalNotifications.swift"; sourceTree = "<group>"; };
+		EAD4E94A1CC43443005D8983 /* SuperDelegate+Shortcuts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+Shortcuts.swift"; sourceTree = "<group>"; };
+		EAD4E94C1CC43514005D8983 /* SuperDelegate+WatchKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+WatchKit.swift"; sourceTree = "<group>"; };
+		EAD4E94E1CC436D1005D8983 /* SuperDelegate+StateRestoration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+StateRestoration.swift"; sourceTree = "<group>"; };
+		EAD4E9501CC437A3005D8983 /* SuperDelegate+Bluetooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+Bluetooth.swift"; sourceTree = "<group>"; };
+		EAD4E9521CC437E7005D8983 /* SuperDelegate+LocationEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+LocationEvents.swift"; sourceTree = "<group>"; };
+		EAD4E9541CC4381E005D8983 /* SuperDelegate+UserActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+UserActivity.swift"; sourceTree = "<group>"; };
+		EAD4E9561CC46B2A005D8983 /* SuperDelegate+OpenURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+OpenURL.swift"; sourceTree = "<group>"; };
+		EAD4E9581CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+BluetoothTests.swift"; sourceTree = "<group>"; };
+		EAD4E95A1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+LocalNotificationsTests.swift"; sourceTree = "<group>"; };
+		EAD4E95C1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+LocationEventsTests.swift"; sourceTree = "<group>"; };
+		EAD4E95E1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+OpenURLTests.swift"; sourceTree = "<group>"; };
+		EAD4E9601CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+RemoteNotificationsTests.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EA65F98A1CBF06EB00CBA8E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA65F9951CBF06EB00CBA8E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA65F9991CBF06EB00CBA8E3 /* SuperDelegate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EA65F9841CBF06EB00CBA8E3 = {
+			isa = PBXGroup;
+			children = (
+				DCD068281CC6E32F00EC892D /* Package.swift */,
+				EA65F9901CBF06EB00CBA8E3 /* Sources */,
+				EA65F99C1CBF06EB00CBA8E3 /* Tests */,
+				EA65F98F1CBF06EB00CBA8E3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EA65F98F1CBF06EB00CBA8E3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA65F98E1CBF06EB00CBA8E3 /* SuperDelegate.framework */,
+				EA65F9981CBF06EB00CBA8E3 /* SuperDelegateTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EA65F9901CBF06EB00CBA8E3 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				EA65F9931CBF06EB00CBA8E3 /* Info.plist */,
+				EA65F9911CBF06EB00CBA8E3 /* SuperDelegate.h */,
+				EA65F9A81CBF070100CBA8E3 /* SuperDelegate.swift */,
+				EA5B32111CD03F1F001080DC /* LaunchItem.swift */,
+				EAD4E93C1CC0362E005D8983 /* RemoteNotification.swift */,
+				EAD4E9501CC437A3005D8983 /* SuperDelegate+Bluetooth.swift */,
+				EAB48E411CCFD5EC0053E7FB /* SuperDelegate+Handoff.swift */,
+				EAD4E9481CC433CB005D8983 /* SuperDelegate+LocalNotifications.swift */,
+				EAD4E9521CC437E7005D8983 /* SuperDelegate+LocationEvents.swift */,
+				EAD4E9561CC46B2A005D8983 /* SuperDelegate+OpenURL.swift */,
+				EAD4E9441CC429FC005D8983 /* SuperDelegate+RemoteNotifications.swift */,
+				EAD4E94A1CC43443005D8983 /* SuperDelegate+Shortcuts.swift */,
+				EAD4E94E1CC436D1005D8983 /* SuperDelegate+StateRestoration.swift */,
+				EAD4E9541CC4381E005D8983 /* SuperDelegate+UserActivity.swift */,
+				EAD4E9461CC4332E005D8983 /* SuperDelegate+UserNotifications.swift */,
+				EAD4E94C1CC43514005D8983 /* SuperDelegate+WatchKit.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		EA65F99C1CBF06EB00CBA8E3 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				EA65F99F1CBF06EB00CBA8E3 /* Info.plist */,
+				EA65F99D1CBF06EB00CBA8E3 /* SuperDelegateTests.swift */,
+				EAD4E9581CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift */,
+				EAD4E95A1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift */,
+				EAD4E95C1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift */,
+				EAD4E95E1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift */,
+				EAD4E9601CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift */,
+				EA47167D1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift */,
+				EA47167F1CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift */,
+				EA4716811CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift */,
+				EA626DF31CC5FF6900E5CEFD /* SuperDelegate+UserNotificationsTests.swift */,
+				EA4716831CC5F36400DE3B99 /* SuperDelegate+WatchKitTests.swift */,
+				EAD4E9401CC18D16005D8983 /* RemoteNotificationTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		EA65F98B1CBF06EB00CBA8E3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA65F9921CBF06EB00CBA8E3 /* SuperDelegate.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		EA65F98D1CBF06EB00CBA8E3 /* SuperDelegate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA65F9A21CBF06EB00CBA8E3 /* Build configuration list for PBXNativeTarget "SuperDelegate" */;
+			buildPhases = (
+				EA65F9891CBF06EB00CBA8E3 /* Sources */,
+				EA65F98A1CBF06EB00CBA8E3 /* Frameworks */,
+				EA65F98B1CBF06EB00CBA8E3 /* Headers */,
+				EA65F98C1CBF06EB00CBA8E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SuperDelegate;
+			productName = SuperDelegate;
+			productReference = EA65F98E1CBF06EB00CBA8E3 /* SuperDelegate.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		EA65F9971CBF06EB00CBA8E3 /* SuperDelegateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA65F9A51CBF06EB00CBA8E3 /* Build configuration list for PBXNativeTarget "SuperDelegateTests" */;
+			buildPhases = (
+				EA65F9941CBF06EB00CBA8E3 /* Sources */,
+				EA65F9951CBF06EB00CBA8E3 /* Frameworks */,
+				EA65F9961CBF06EB00CBA8E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA65F99B1CBF06EB00CBA8E3 /* PBXTargetDependency */,
+			);
+			name = SuperDelegateTests;
+			productName = SuperDelegateTests;
+			productReference = EA65F9981CBF06EB00CBA8E3 /* SuperDelegateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EA65F9851CBF06EB00CBA8E3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Square, Inc.";
+				TargetAttributes = {
+					EA65F98D1CBF06EB00CBA8E3 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					EA65F9971CBF06EB00CBA8E3 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = EA65F9881CBF06EB00CBA8E3 /* Build configuration list for PBXProject "SuperDelegate" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EA65F9841CBF06EB00CBA8E3;
+			productRefGroup = EA65F98F1CBF06EB00CBA8E3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EA65F98D1CBF06EB00CBA8E3 /* SuperDelegate */,
+				EA65F9971CBF06EB00CBA8E3 /* SuperDelegateTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EA65F98C1CBF06EB00CBA8E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA65F9961CBF06EB00CBA8E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EA65F9891CBF06EB00CBA8E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAD4E9571CC46B2A005D8983 /* SuperDelegate+OpenURL.swift in Sources */,
+				EAD4E9491CC433CB005D8983 /* SuperDelegate+LocalNotifications.swift in Sources */,
+				EAD4E9451CC429FC005D8983 /* SuperDelegate+RemoteNotifications.swift in Sources */,
+				EAD4E9511CC437A3005D8983 /* SuperDelegate+Bluetooth.swift in Sources */,
+				EAB48E421CCFD5EC0053E7FB /* SuperDelegate+Handoff.swift in Sources */,
+				EA5B32121CD03F1F001080DC /* LaunchItem.swift in Sources */,
+				EAD4E9471CC4332E005D8983 /* SuperDelegate+UserNotifications.swift in Sources */,
+				EAD4E94B1CC43443005D8983 /* SuperDelegate+Shortcuts.swift in Sources */,
+				EA65F9A91CBF070100CBA8E3 /* SuperDelegate.swift in Sources */,
+				EAD4E9531CC437E7005D8983 /* SuperDelegate+LocationEvents.swift in Sources */,
+				EAD4E93D1CC0362E005D8983 /* RemoteNotification.swift in Sources */,
+				EAD4E94D1CC43514005D8983 /* SuperDelegate+WatchKit.swift in Sources */,
+				EAD4E9551CC4381E005D8983 /* SuperDelegate+UserActivity.swift in Sources */,
+				EAD4E94F1CC436D1005D8983 /* SuperDelegate+StateRestoration.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA65F9941CBF06EB00CBA8E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAD4E9411CC18D16005D8983 /* RemoteNotificationTests.swift in Sources */,
+				EAD4E95D1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift in Sources */,
+				EA626DF41CC5FF6900E5CEFD /* SuperDelegate+UserNotificationsTests.swift in Sources */,
+				EA65F99E1CBF06EB00CBA8E3 /* SuperDelegateTests.swift in Sources */,
+				EA4716841CC5F36400DE3B99 /* SuperDelegate+WatchKitTests.swift in Sources */,
+				EA4716801CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift in Sources */,
+				EA4716821CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift in Sources */,
+				EAD4E9611CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift in Sources */,
+				EA47167E1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift in Sources */,
+				EAD4E9591CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift in Sources */,
+				EAD4E95F1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift in Sources */,
+				EAD4E95B1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EA65F99B1CBF06EB00CBA8E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EA65F98D1CBF06EB00CBA8E3 /* SuperDelegate */;
+			targetProxy = EA65F99A1CBF06EB00CBA8E3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EA65F9A01CBF06EB00CBA8E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		EA65F9A11CBF06EB00CBA8E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		EA65F9A31CBF06EB00CBA8E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SuperDelegate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EA65F9A41CBF06EB00CBA8E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SuperDelegate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		EA65F9A61CBF06EB00CBA8E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SuperDelegateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EA65F9A71CBF06EB00CBA8E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SuperDelegateTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EA65F9881CBF06EB00CBA8E3 /* Build configuration list for PBXProject "SuperDelegate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA65F9A01CBF06EB00CBA8E3 /* Debug */,
+				EA65F9A11CBF06EB00CBA8E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA65F9A21CBF06EB00CBA8E3 /* Build configuration list for PBXNativeTarget "SuperDelegate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA65F9A31CBF06EB00CBA8E3 /* Debug */,
+				EA65F9A41CBF06EB00CBA8E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA65F9A51CBF06EB00CBA8E3 /* Build configuration list for PBXNativeTarget "SuperDelegateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA65F9A61CBF06EB00CBA8E3 /* Debug */,
+				EA65F9A71CBF06EB00CBA8E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EA65F9851CBF06EB00CBA8E3 /* Project object */;
+}
