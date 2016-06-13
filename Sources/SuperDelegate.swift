@@ -28,14 +28,14 @@ public protocol ApplicationLaunched {
     /// Very first method that SuperDelegate calls on launch. Guaranteed to only be called once.
     func setupApplication()
     /// Called when the app launches. Guaranteed to only be called once.
-    func loadInterfaceWithLaunchItem(launchItem: LaunchItem)
+    func loadInterface(launchItem: LaunchItem)
 }
 
 
 // MARK: - SuperDelegate
 
 
-public class SuperDelegate: NSObject, UIApplicationDelegate {
+open class SuperDelegate: NSObject, UIApplicationDelegate {
     
     
     // MARK: Public Properties
@@ -48,15 +48,15 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
     
     
     private var withinLoadInterface = false
-    /// Convenience method to set up the main window. Must be called from loadInterfaceWithLaunchItem(_:).
-    public func setupMainWindow(window: UIWindow) {
+    /// Convenience method to set up the main window. Must be called from loadInterface(launchItem:).
+    public func setup(mainWindow: UIWindow) {
         guard withinLoadInterface else {
-            noteImproperAPIUsage("Must call \(#function) from within loadInterfaceWithLaunchItem(_:)")
+            noteImproperAPIUsage("Must call \(#function) from within loadInterface(launchItem:)")
             return
         }
         
-        window.frame = UIScreen.mainScreen().bounds
-        window.makeKeyAndVisible()
+        mainWindow.frame = UIScreen.main.bounds
+        mainWindow.makeKeyAndVisible()
     }
     
     
@@ -66,8 +66,8 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
     private var handledShortcutInWillFinishLaunching = false
     private var couldHandleURLInWillFinishLaunching = true
     private var couldHandleUserActivityInWillFinishLaunching = true
-    @warn_unused_result
-    final public func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    
+    final public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         guard self is ApplicationLaunched else {
             noteImproperAPIUsage("\(self) must conform to ApplicationLaunched protocol")
             return false
@@ -77,55 +77,55 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
         requestUserNotificationPermissionsIfPreviouslyRegistered()
         
         // Use notification listeners to respond to application lifecycle events to subclasses can override the default hooks.
-        applicationDidBecomeActiveListener = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidBecomeActiveNotification, object: application, queue: NSOperationQueue.mainQueue()) { [weak self] _ in
+        applicationDidBecomeActiveListener = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: application, queue: OperationQueue.main) { [weak self] _ in
             self?.applicationIsInForeground = true
         }
-        applicationDidEnterBackgroundListener = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: application, queue: NSOperationQueue.mainQueue()) { [weak self] _ in
+        applicationDidEnterBackgroundListener = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: application, queue: OperationQueue.main) { [weak self] _ in
             self?.applicationIsInForeground = false
         }
         
         var launchItem = LaunchItem(launchOptions: launchOptions)
         switch launchItem {
-        case let .ShortcutItem(launchShortcutItem):
+        case let .shortcut(launchShortcutItem):
             if #available(iOS 9.0, *) {
                 guard let shortcutCapableSelf = self as? ShortcutCapable else {
                     noteImproperAPIUsage("Received shortcut item but \(self) does not conform to ShortcutCapable. Not handling shortcut.")
                     return true
                 }
                 
-                handledShortcutInWillFinishLaunching = shortcutCapableSelf.canHandleShortcutItem(launchShortcutItem)
+                handledShortcutInWillFinishLaunching = shortcutCapableSelf.canHandle(shortcutItem: launchShortcutItem)
                 if !handledShortcutInWillFinishLaunching {
-                    launchItem = .NoItem
+                    launchItem = .none
                 }
             } else {
                 // Should not be possible.
                 noteImproperAPIUsage("Launched due to ShortcutItem but not running iOS 9 or later.")
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case let .UserActivityItem(launchUserActivity):
+        case let .userActivity(launchUserActivity):
             guard let userActivityCapableSelf = self as? UserActivityCapable else {
                 noteImproperAPIUsage("Received user activity item but \(self) does not conform to UserActivityCapable. Not handling user activity.")
                 return false
             }
             
-            couldHandleUserActivityInWillFinishLaunching = userActivityCapableSelf.canHandleUserActivity(launchUserActivity)
+            couldHandleUserActivityInWillFinishLaunching = userActivityCapableSelf.canResume(userActivity: launchUserActivity)
             if !couldHandleUserActivityInWillFinishLaunching {
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case let .OpenURLItem(launchURLToOpen):
+        case let .openURL(launchURLToOpen):
             guard let openURLCapableSelf = self as? OpenURLCapable else {
                 noteImproperAPIUsage("Received openURL action but \(self) does not conform to OpenURLCapable. Not handling URL.")
                 return false
             }
             
-            couldHandleURLInWillFinishLaunching = openURLCapableSelf.canOpenLaunchURL(launchURLToOpen)
+            couldHandleURLInWillFinishLaunching = openURLCapableSelf.canOpen(launchURL: launchURLToOpen)
             if !couldHandleURLInWillFinishLaunching {
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case .RemoteNotificationItem, .LocalNotificationItem, .NoItem:
+        case .remoteNotification, .localNotification, .none:
             // Nothing to do.
             break
         }
@@ -134,7 +134,7 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
         if self is StateRestorationCapable {
             // Per Apple's docs: If your app relies on the state restoration machinery to restore its view controllers, always show your app’s window from this method. Do not show the window in your app’s application:didFinishLaunchingWithOptions: method. Calling the window’s makeKeyAndVisible method does not make the window visible right away anyway. UIKit waits until your app’s application:didFinishLaunchingWithOptions: method finishes before making the window visible on the screen.
             
-            loadInterfaceOnceWithLaunchItem(launchItem)
+            loadInterfaceOnce(with: launchItem)
         }
         
         return true
@@ -146,8 +146,7 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
             && !handledShortcutInWillFinishLaunching
     }
     
-    @warn_unused_result
-    final public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    final public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         guard self is ApplicationLaunched else {
             noteImproperAPIUsage("\(self) must conform to ApplicationLaunched protocol")
             return false
@@ -157,25 +156,25 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
             application.registerForRemoteNotifications()
         }
         
-        if let launchBluetoothPeripheralIdentifiers = launchOptions?[UIApplicationLaunchOptionsBluetoothPeripheralsKey] as? [String] {
+        if let launchBluetoothPeripheralIdentifiers = launchOptions?[UIApplicationLaunchOptionsKey.bluetoothPeripherals] as? [String] {
             guard let backgroundBluetoothPeripheralCapableSelf = self as? BackgroundBluetoothPeripheralCapable else {
                 noteImproperAPIUsage("Received background bluetooth peripheral restore identifier but \(self) does not conform to BackgroundBluetoothPeripheralCapable. Failing to launch app.")
                 return false
             }
             
-            backgroundBluetoothPeripheralCapableSelf.restoreBluetoothPeripheralManagersWithIdentifiers(launchBluetoothPeripheralIdentifiers)
+            backgroundBluetoothPeripheralCapableSelf.restoreBluetoothPeripheralManagers(withIdentifiers: launchBluetoothPeripheralIdentifiers)
         }
         
-        if let launchBluetoothCentralIdentifiers = launchOptions?[UIApplicationLaunchOptionsBluetoothCentralsKey] as? [String] {
+        if let launchBluetoothCentralIdentifiers = launchOptions?[UIApplicationLaunchOptionsKey.bluetoothCentrals] as? [String] {
             guard let backgroundBluetoothCentralCapableSelf = self as? BackgroundBluetoothCentralCapable else {
                 noteImproperAPIUsage("Received background bluetooth peripheral restore identifier but \(self) does not conform to BackgroundBluetoothCentralCapable. Failing to launch app.")
                 return false
             }
             
-            backgroundBluetoothCentralCapableSelf.restoreBluetoothCentralManagersWithIdentifiers(launchBluetoothCentralIdentifiers)
+            backgroundBluetoothCentralCapableSelf.restoreBluetoothCentralManagers(withIdentifiers: launchBluetoothCentralIdentifiers)
         }
         
-        if let launchDueToLocationEvent = launchOptions?[UIApplicationLaunchOptionsLocationKey] as? Bool where launchDueToLocationEvent {
+        if let launchDueToLocationEvent = launchOptions?[UIApplicationLaunchOptionsKey.location] as? Bool, launchDueToLocationEvent {
             guard let locationEventCapableSelf = self as? LocationEventCapable else {
                 noteImproperAPIUsage("Launched due to location event but \(self) does not conform to LocationEventCapable. Failing to launch app.")
                 return false
@@ -186,47 +185,47 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
         
         var launchItem = LaunchItem(launchOptions: launchOptions)
         switch launchItem {
-        case .ShortcutItem:
+        case .shortcut:
             if !handledShortcutInWillFinishLaunching {
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case let .UserActivityItem(userActivity):
+        case let .userActivity(item):
             if couldHandleUserActivityInWillFinishLaunching {
-                launchOptionsUserActivity = userActivity
+                launchOptionsUserActivity = item
             } else {
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case let .OpenURLItem(urlToOpen):
+        case let .openURL(item):
             if couldHandleURLInWillFinishLaunching {
-                launchOptionsURLToOpen = urlToOpen.url
+                launchOptionsURLToOpen = item.url
             } else {
-                launchItem = .NoItem
+                launchItem = .none
             }
             
-        case let .RemoteNotificationItem(remoteNotification):
-            launchOptionsRemoteNotification = remoteNotification
+        case let .remoteNotification(item):
+            launchOptionsRemoteNotification = item
             
-        case let .LocalNotificationItem(localNotification):
-            launchOptionsLocalNotification = localNotification
+        case let .localNotification(item):
+            launchOptionsLocalNotification = item
             
-        case .NoItem:
+        case .none:
             // Nothing to do.
             break
         }
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64(5.0) * Int64(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(5), execute: {
             self.launchOptionsUserActivity = nil
             self.launchOptionsURLToOpen = nil
             self.launchOptionsRemoteNotification = nil
             self.launchOptionsLocalNotification = nil
         })
         
-        loadInterfaceOnceWithLaunchItem(launchItem)
+        loadInterfaceOnce(with: launchItem)
         
         // Now that we've loaded the interface with our launch item, set up our willEnterForegroundListener
-        applicationWillEnterForegroundListener = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: application, queue: NSOperationQueue.mainQueue()) { [weak self] _ in
+        applicationWillEnterForegroundListener = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: application, queue: OperationQueue.main) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
@@ -256,21 +255,21 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
     
     /// iOS 8 and 9 deliver the same remote notification via launchOptions and then via application(_:didReceiveRemoteNotification:fetchCompletionHandler:). Protect against processing twice by storing the launchOptionsRemoteNotification, and not processing notifications that are equal to it immediately after launch.
     var launchOptionsRemoteNotification: RemoteNotification?
-
-    /// iOS 8 and 9 deliver the same local notification via launchOptions and then via application(_:didReceiveLocalNotification:). Protect against processing twice by storing the launchOptionsLocalNotification, and not processing notifications that are equal to it immediately after launch.
+    
+    /// iOS 8 and 9 deliver the same local notification via launchOptions and then via application(_:didReceive:). Protect against processing twice by storing the launchOptionsLocalNotification, and not processing notifications that are equal to it immediately after launch.
     var launchOptionsLocalNotification: UILocalNotification?
     
-    /// iOS 8 and 9 deliver the same URL via launchOptions and then via application(_:openURL:*:). Protect against processing twice by storing the launchOptionsURLToOpen, and not processing URLs that are equal to it immediately after launch.
-    var launchOptionsURLToOpen: NSURL?
+    /// iOS 8 and 9 deliver the same URL via launchOptions and then via application(_:open:*:). Protect against processing twice by storing the launchOptionsURLToOpen, and not processing URLs that are equal to it immediately after launch.
+    var launchOptionsURLToOpen: URL?
     
-    /// iOS 8 and 9 deliver the same URL via launchOptions and then via application(_:continueUserActivity:restorationHandler:). Protect against processing twice by storing the launchOptionsUserActivity, and not processing user activity items that are equal to it immediately after launch.
+    /// iOS 8 and 9 deliver the same URL via launchOptions and then via application(_:continue:restorationHandler:). Protect against processing twice by storing the launchOptionsUserActivity, and not processing user activity items that are equal to it immediately after launch.
     var launchOptionsUserActivity: NSUserActivity?
     
     
     // MARK: Internal Methods
     
     
-    func noteImproperAPIUsage(text: String) {
+    func noteImproperAPIUsage(_ text: String) {
         assertionFailure("Improper SuperDelegate API Usage: \(text)")
     }
     
@@ -292,7 +291,7 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
     }
     
     var interfaceLoaded = false
-    func loadInterfaceOnceWithLaunchItem(launchItem: LaunchItem) {
+    func loadInterfaceOnce(with launchItem: LaunchItem) {
         // iOS 8.0 introduced a bug (fixed in 8.3) where loading UI on a 32bit device while the app is in the .Background state can cause a crash due to CUIShapeEffectStack.sharedCIContext() trying to access the GPU when created outside of application(_:applicationDidFinishLaunching:options:). Hack around the problem by creating a sharedCIContext within application(_:application*FinishLaunching:options:) by creating a dummy navigation bar and laying it out. For more details, see https://devforums.apple.com/thread/246744
         UINavigationBar(frame: CGRect(x: 0, y: 0, width: 1, height: 1)).layoutSubviews()
         
@@ -306,7 +305,7 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
             return
         }
         withinLoadInterface = true
-        applicationLaunchedSelf.loadInterfaceWithLaunchItem(launchItem)
+        applicationLaunchedSelf.loadInterface(launchItem: launchItem)
         withinLoadInterface = false
         
         interfaceLoaded = true
@@ -316,9 +315,9 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
     // MARK: Private Properties
     
     
-    private var applicationDidBecomeActiveListener: AnyObject?
-    private var applicationWillEnterForegroundListener: AnyObject?
-    private var applicationDidEnterBackgroundListener: AnyObject?
+    private var applicationDidBecomeActiveListener: NSObjectProtocol?
+    private var applicationWillEnterForegroundListener: NSObjectProtocol?
+    private var applicationDidEnterBackgroundListener: NSObjectProtocol?
     
     
     // MARK: Private Methods
@@ -340,13 +339,13 @@ public class SuperDelegate: NSObject, UIApplicationDelegate {
         }
         
         if let applicationDidBecomeActiveListener = applicationDidBecomeActiveListener {
-            NSNotificationCenter.defaultCenter().removeObserver(applicationDidBecomeActiveListener)
+            NotificationCenter.default.removeObserver(applicationDidBecomeActiveListener)
         }
         if let applicationWillEnterForegroundListener = applicationWillEnterForegroundListener {
-            NSNotificationCenter.defaultCenter().removeObserver(applicationWillEnterForegroundListener)
+            NotificationCenter.default.removeObserver(applicationWillEnterForegroundListener)
         }
         if let applicationDidEnterBackgroundListener = applicationDidEnterBackgroundListener {
-            NSNotificationCenter.defaultCenter().removeObserver(applicationDidEnterBackgroundListener)
+            NotificationCenter.default.removeObserver(applicationDidEnterBackgroundListener)
         }
     }
 }

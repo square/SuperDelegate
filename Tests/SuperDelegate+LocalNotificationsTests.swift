@@ -35,10 +35,10 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocalNotificationKey : localNotification]))
+        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.localNotification : localNotification]))
         
         switch localNotificationCapableDelegate.launchItem {
-        case let .LocalNotificationItem(launchLocalNotification):
+        case let .localNotification(launchLocalNotification):
             XCTAssertEqual(localNotification, launchLocalNotification)
         default:
             XCTFail()
@@ -47,37 +47,37 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
     
     func test_receivingLocalNotification_notifiesIfUserTapped() {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
-        localNotificationCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        localNotificationCapableDelegate.loadInterfaceOnce(with: .none)
         
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveLocalNotification: localNotification)
+        localNotificationCapableDelegate.application(UIApplication.shared, didReceive: localNotification)
         
         XCTAssertEqual(localNotification, localNotificationCapableDelegate.receivedLocalNotification)
-        XCTAssertEqual(localNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.UserTappedToBringAppToForeground)
+        XCTAssertEqual(localNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.userTappedToBringAppToForeground)
     }
     
     func test_receivingLocalNotification_notifiesIfAppInForeground() {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
-        localNotificationCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        localNotificationCapableDelegate.loadInterfaceOnce(with: .none)
         localNotificationCapableDelegate.applicationIsInForeground = true
         
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveLocalNotification: localNotification)
+        localNotificationCapableDelegate.application(UIApplication.shared, didReceive: localNotification)
         
         XCTAssertEqual(localNotification, localNotificationCapableDelegate.receivedLocalNotification)
-        XCTAssertEqual(localNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.DeliveredWhileInForground)
+        XCTAssertEqual(localNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.deliveredWhileInForeground)
     }
     
-    func test_didReceiveLocalNotification_dropsRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
+    func test_didReceive_dropsRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocalNotificationKey : localNotification]))
+        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.localNotification : localNotification]))
         
         switch localNotificationCapableDelegate.launchItem {
-        case let .LocalNotificationItem(launchLocalNotification):
+        case let .localNotification(launchLocalNotification):
             XCTAssertEqual(localNotification, launchLocalNotification)
         default:
             XCTFail()
@@ -85,19 +85,19 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         
         XCTAssertNil(localNotificationCapableDelegate.receivedLocalNotification)
         
-        localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveLocalNotification: localNotification)
+        localNotificationCapableDelegate.application(UIApplication.shared, didReceive: localNotification)
         
         XCTAssertNil(localNotificationCapableDelegate.receivedLocalNotification)
     }
     
-    func test_didReceiveLocalNotification_doesNotDropLocalNotificationDeliveredToLoadInterfaceWithLaunchItemAfterApplicationWillEnterForeground() {
+    func test_didReceive_doesNotDropLocalNotificationDeliveredToLoadInterfaceWithLaunchItemAfterApplicationWillEnterForeground() {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocalNotificationKey : localNotification]))
+        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.localNotification : localNotification]))
         
         switch localNotificationCapableDelegate.launchItem {
-        case let .LocalNotificationItem(launchLocalNotification):
+        case let .localNotification(launchLocalNotification):
             XCTAssertEqual(localNotification, launchLocalNotification)
         default:
             XCTFail()
@@ -105,21 +105,21 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         
         XCTAssertNil(localNotificationCapableDelegate.receivedLocalNotification)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         
-        localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveLocalNotification: localNotification)
+        localNotificationCapableDelegate.application(UIApplication.shared, didReceive: localNotification)
         
         XCTAssertEqual(localNotificationCapableDelegate.receivedLocalNotification, localNotification)
     }
     
-    func test_didReceiveLocalNotification_doesNotDropLocalNotificationDifferentThanLocalNotificationDeliveredToLoadInterfaceWithLaunchItem() {
+    func test_didReceive_doesNotDropLocalNotificationDifferentThanLocalNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let localNotificationCapableDelegate = LocalNotificationCapableDelegate()
         let localNotification = UILocalNotification()
         localNotification.alertBody = "somebody"
-        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocalNotificationKey : localNotification]))
+        XCTAssertTrue(localNotificationCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.localNotification : localNotification]))
         
         switch localNotificationCapableDelegate.launchItem {
-        case let .LocalNotificationItem(launchLocalNotification):
+        case let .localNotification(launchLocalNotification):
             XCTAssertEqual(localNotification, launchLocalNotification)
         default:
             XCTFail()
@@ -128,7 +128,7 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         XCTAssertNil(localNotificationCapableDelegate.receivedLocalNotification)
         
         let otherReceivedLocalNotification = UILocalNotification()
-        localNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveLocalNotification: otherReceivedLocalNotification)
+        localNotificationCapableDelegate.application(UIApplication.shared, didReceive: otherReceivedLocalNotification)
         
         XCTAssertEqual(localNotificationCapableDelegate.receivedLocalNotification, otherReceivedLocalNotification)
     }
@@ -144,7 +144,7 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         let actionIdentifier = "some action"
         
         var completionHandlerExecuted = false
-        localNotificationActionCapableDelegate.application(UIApplication.sharedApplication(), handleActionWithIdentifier: actionIdentifier, forLocalNotification: localNotification) { 
+        localNotificationActionCapableDelegate.application(UIApplication.shared, handleActionWithIdentifier: actionIdentifier, for: localNotification) {
             completionHandlerExecuted = true
         }
         
@@ -164,7 +164,7 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
         let responseInfo = ["a response" : "object"]
         
         var completionHandlerExecuted = false
-        localNotificationActionCapableDelegate.application(UIApplication.sharedApplication(), handleActionWithIdentifier: actionIdentifier, forLocalNotification: localNotification, withResponseInfo: responseInfo) {
+        localNotificationActionCapableDelegate.application(UIApplication.shared, handleActionWithIdentifier: actionIdentifier, for: localNotification, withResponseInfo: responseInfo) {
             completionHandlerExecuted = true
         }
         
@@ -182,10 +182,10 @@ class SuperDelegateLocalNotificationTests: SuperDelegateTests {
 class LocalNotificationCapableDelegate: UserNotificationsCapableDelegate, LocalNotificationCapable {
     
     var receivedLocalNotification: UILocalNotification?
-    var receivedNotificationOrigin = UserNotificationOrigin.DeliveredWhileInBackground
-    func didReceiveLocalNotification(localNotification: UILocalNotification, notificationOrigin: UserNotificationOrigin) {
+    var receivedNotificationOrigin = UserNotificationOrigin.deliveredWhileInBackground
+    func didReceive(localNotification: UILocalNotification, origin: UserNotificationOrigin) {
         receivedLocalNotification = localNotification
-        receivedNotificationOrigin = notificationOrigin
+        receivedNotificationOrigin = origin
     }
 }
 
@@ -197,8 +197,8 @@ class LocalNotificationActionCapableDelegate: LocalNotificationCapableDelegate, 
     
     var handledActionIdentifier: String? = ""
     var handledLocalNotification = UILocalNotification()
-    var handledResponseInfo: [String : AnyObject]? = nil
-    func handleLocalNotificationActionWithIdentifier(actionIdentifier: String?, forLocalNotification notification: UILocalNotification, withResponseInfo responseInfo: [String : AnyObject]?, completionHandler: () -> Void) {
+    var handledResponseInfo: [String : Any]? = nil
+    func handleLocalNotification(actionIdentifier: String?, for notification: UILocalNotification, withResponseInfo responseInfo: [String : Any]?, completionHandler: @escaping () -> Swift.Void) {
         handledActionIdentifier = actionIdentifier
         handledLocalNotification = notification
         handledResponseInfo = responseInfo

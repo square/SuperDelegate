@@ -24,7 +24,7 @@ import XCTest
 class RemoteNotificationTests: XCTestCase {
     
     func test_RemoteNotification_initWithFullRemoteNotificationDictionary() {
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -88,7 +88,7 @@ class RemoteNotificationTests: XCTestCase {
     }
     
     func test_RemoteNotification_initWithSimpleAlertRemoteNotificationDictionary() {
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : alertBody,
                 badgeKey : badge,
@@ -130,7 +130,7 @@ class RemoteNotificationTests: XCTestCase {
     }
     
     func test_RemoteNotification_initWithSilentRemoteNotificationDictionary() {
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 badgeKey : badge,
                 soundKey : sound,
@@ -165,7 +165,7 @@ class RemoteNotificationTests: XCTestCase {
         XCTAssertEqual(remoteNotification.userInfo[userInfoCustomKey3] as? Int, userInfoCustomValue3)
         
         XCTAssertTrue(remoteNotification == RemoteNotification(remoteNotification: remoteNotificationDictionary)!)
-        let differentRemoteNotificationDictionary: [NSObject : AnyObject] = [
+        let differentRemoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 badgeKey : badge,
                 soundKey : sound,
@@ -181,7 +181,7 @@ class RemoteNotificationTests: XCTestCase {
     }
     
     func test_RemoteNotification_initWithBadgeChangeRemoteNotificationDictionary() {
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 badgeKey : badge,
                 soundKey : sound,
@@ -200,7 +200,7 @@ class RemoteNotificationTests: XCTestCase {
         XCTAssertNil(remoteNotification.alert?.wearableTitle)
         XCTAssertNil(remoteNotification.alert?.wearableTitleLocalizationKey)
         XCTAssertNil(remoteNotification.alert?.wearableTitleLocalizationArguments?.count)
-
+        
         XCTAssertEqual(badge, remoteNotification.badge)
         XCTAssertEqual(sound, remoteNotification.sound)
         XCTAssertFalse(remoteNotification.contentAvailable)
@@ -213,7 +213,7 @@ class RemoteNotificationTests: XCTestCase {
         differentRemoteNotificationDictionary[badgeKey] = badge+1
         XCTAssertNotEqual(remoteNotification, RemoteNotification(remoteNotification: differentRemoteNotificationDictionary))
     }
-
+    
 }
 
 

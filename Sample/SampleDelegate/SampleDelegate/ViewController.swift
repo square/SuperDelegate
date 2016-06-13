@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // Show that our view has been loaded by changing our background color to blue.
-        view.backgroundColor = UIColor.blueColor()
+        view.backgroundColor = UIColor.blue
     }
 }
 

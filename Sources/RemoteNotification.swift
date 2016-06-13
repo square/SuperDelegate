@@ -33,12 +33,23 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
     /// The identifier for the UIUserNotificationCategory associated with the push notification. Derived from userInfo["category"]
     public let categoryIdentifier: String?
     /// Custom fields on the remote notification.
-    public let userInfo: [String : AnyObject]
+    public let userInfo: [String : Any]
     /// The dictionary representation of the remote notification.
-    public let remoteNotificationDictionary: [String : AnyObject]
+    public let remoteNotificationDictionary: [String : Any]
     
-    public init?(remoteNotification: [NSObject : AnyObject]?) {
-        guard let remoteNotification = remoteNotification as? [String : AnyObject] else {
+    // MARK: Equatable
+    
+    public static func ==(lhs: RemoteNotification, rhs: RemoteNotification) -> Bool {
+        return lhs.alert == rhs.alert
+            && lhs.badge == rhs.badge
+            && lhs.sound == rhs.sound
+            && lhs.contentAvailable == rhs.contentAvailable
+            && lhs.categoryIdentifier == rhs.categoryIdentifier
+            && NSDictionary(dictionary: lhs.userInfo) == NSDictionary(dictionary: rhs.userInfo)
+    }
+    
+    public init?(remoteNotification: [AnyHashable : Any]?) {
+        guard let remoteNotification = remoteNotification as? [String : Any] else {
             return nil
         }
         
@@ -46,7 +57,7 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
         // See https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/TheNotificationPayload.html for more information on expected values.
         alert = Alert(remoteNotification: remoteNotification)
         
-        let apnsDictionary = remoteNotification[APSServiceKey] as? [String : AnyObject]
+        let apnsDictionary = remoteNotification[APSServiceKey] as? [String : Any]
         badge = apnsDictionary?[badgeKey] as? Int
         sound = apnsDictionary?[soundKey] as? String
         contentAvailable = apnsDictionary?[contentAvailableKey] != nil
@@ -54,7 +65,7 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
         remoteNotificationDictionary = remoteNotification
         
         var customFields = remoteNotification
-        customFields.removeValueForKey(APSServiceKey)
+        customFields.removeValue(forKey: APSServiceKey)
         
         userInfo = customFields
     }
@@ -88,10 +99,27 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
         /// The localization arguments for the title shown on the Apple Watch. Derived from userInfo["aps"]["alert"]["title-loc-args"]
         public let wearableTitleLocalizationArguments: [String]?
         
-        init?(remoteNotification: [String : AnyObject]) {
+        // MARK: Equatable
+        
+        public static func ==(lhs: Alert, rhs: Alert) -> Bool {
+            return lhs.body == rhs.body
+                && lhs.bodyLocalizationKey == rhs.bodyLocalizationKey
+                && lhs.bodyLocalizationArguments ?? [] == rhs.bodyLocalizationArguments ?? []
+                && lhs.actionLocalizationKey == rhs.actionLocalizationKey
+                && lhs.launchImageName == rhs.launchImageName
+                && lhs.wearableTitle == rhs.wearableTitle
+                && lhs.wearableTitleLocalizationKey == rhs.wearableTitleLocalizationKey
+                && lhs.wearableTitleLocalizationArguments ?? [] == rhs.wearableTitleLocalizationArguments ?? []
+        }
+        
+        init?(remoteNotification: [String : Any]) {
             // Alert is represented as either a dictionary or a single string.
-            guard let alert = remoteNotification[APSServiceKey]?[alertKey] as? [String : AnyObject] else {
-                guard let body = remoteNotification[APSServiceKey]?[alertKey] as? String else {
+            guard let apnsDictionary = remoteNotification[APSServiceKey] as? [String : Any] else {
+                return nil
+            }
+            
+            guard let alert = apnsDictionary[alertKey] as? [String : Any] else {
+                guard let body = apnsDictionary[alertKey] as? String else {
                     return nil
                 }
                 
@@ -121,99 +149,6 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
             wearableTitleLocalizationArguments = alert[alertWearableTitleLocArgsKey] as? [String]
         }
     }
-}
-
-
-// MARK: Equatable
-
-@warn_unused_result
-public func ==(lhs: RemoteNotification, rhs: RemoteNotification) -> Bool {
-    if lhs.alert != nil || rhs.alert != nil {
-        guard let lhsAlert = lhs.alert, let rhsAlert = rhs.alert where lhsAlert == rhsAlert else {
-            return false
-        }
-    }
-    
-    if lhs.badge != nil || rhs.badge != nil {
-        guard let lhsBadge = lhs.badge, let rhsBadge = rhs.badge where lhsBadge == rhsBadge else {
-            return false
-        }
-    }
-    
-    if lhs.sound != nil || rhs.sound != nil {
-        guard let lhsSound = lhs.sound, let rhsSound = rhs.sound where lhsSound == rhsSound else {
-            return false
-        }
-    }
-    
-    guard lhs.contentAvailable == rhs.contentAvailable else {
-        return false
-    }
-    
-    if lhs.categoryIdentifier != nil || rhs.categoryIdentifier != nil {
-        guard let lhsCategoryIdentifier = lhs.categoryIdentifier, let rhsCategoryIdentifier = rhs.categoryIdentifier where lhsCategoryIdentifier == rhsCategoryIdentifier else {
-            return false
-        }
-    }
-
-    guard NSDictionary(dictionary: lhs.userInfo) == NSDictionary(dictionary: rhs.userInfo) else {
-        return false
-    }
-    
-    return true
-}
-
-@warn_unused_result
-public func ==(lhs: RemoteNotification.Alert, rhs: RemoteNotification.Alert) -> Bool {
-    if lhs.body != nil || rhs.body != nil {
-        guard let lhsBody = lhs.body, let rhsBody = rhs.body where lhsBody == rhsBody else {
-            return false
-        }
-    }
-    
-    if lhs.bodyLocalizationKey != nil || rhs.bodyLocalizationKey != nil {
-        guard let lhsBodyLocalizationKey = lhs.bodyLocalizationKey, let rhsBodyLocalizationKey = rhs.bodyLocalizationKey where lhsBodyLocalizationKey == rhsBodyLocalizationKey else {
-            return false
-        }
-    }
-    
-    if lhs.bodyLocalizationArguments != nil || rhs.bodyLocalizationArguments != nil {
-        guard let lhsBodyLocalizationArguments = lhs.bodyLocalizationArguments, let rhsBodyLocalizationArguments = rhs.bodyLocalizationArguments where lhsBodyLocalizationArguments == rhsBodyLocalizationArguments else {
-            return false
-        }
-    }
-
-    if lhs.actionLocalizationKey != nil || rhs.actionLocalizationKey != nil {
-        guard let lhsActionLocalizationKey = lhs.actionLocalizationKey, let rhsActionLocalizationKey = rhs.actionLocalizationKey where lhsActionLocalizationKey == rhsActionLocalizationKey else {
-            return false
-        }
-    }
-    
-    if lhs.launchImageName != nil || rhs.launchImageName != nil {
-        guard let lhsLaunchImageName = lhs.launchImageName, let rhsLaunchImageName = rhs.launchImageName where lhsLaunchImageName == rhsLaunchImageName else {
-            return false
-        }
-    }
-    
-    if lhs.wearableTitle != nil || rhs.wearableTitle != nil {
-        guard let lhsWearableTitle = lhs.wearableTitle, let rhsWearableTitle = rhs.wearableTitle where lhsWearableTitle == rhsWearableTitle else {
-            return false
-        }
-    }
-    
-    if lhs.wearableTitleLocalizationKey != nil || rhs.wearableTitleLocalizationKey != nil {
-        guard let lhsWearableTitleLocalizationKey = lhs.wearableTitleLocalizationKey, let rhsWearableTitleLocalizationKey = rhs.wearableTitleLocalizationKey where lhsWearableTitleLocalizationKey == rhsWearableTitleLocalizationKey else {
-            return false
-        }
-    }
-    
-    if lhs.wearableTitleLocalizationArguments != nil || rhs.wearableTitleLocalizationArguments != nil {
-        guard let lhsWearableTitleLocalizationArguments = lhs.wearableTitleLocalizationArguments, let rhsWearableTitleLocalizationArguments = rhs.wearableTitleLocalizationArguments where lhsWearableTitleLocalizationArguments == rhsWearableTitleLocalizationArguments else {
-            return false
-        }
-    }
-    
-    return true
 }
 
 

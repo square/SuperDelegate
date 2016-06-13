@@ -26,7 +26,7 @@ import Foundation
 
 public protocol WatchKitCapable: ApplicationLaunched {
     /// Called when your app receives a request from the WatchKit extension
-    func handleWatchKitExtensionRequest(userInfo: [NSObject : AnyObject]?, reply: ([NSObject : AnyObject]?) -> Void)
+    func handleWatchKitExtensionRequest(userInfo: [AnyHashable : Any]?, reply: @escaping ([AnyHashable : Any]?) -> Swift.Void)
 }
 
 
@@ -39,7 +39,7 @@ extension SuperDelegate {
     // MARK: UIApplicationDelegate
     
     
-    final public func application(application: UIApplication, handleWatchKitExtensionRequest userInfo: [NSObject : AnyObject]?, reply: ([NSObject : AnyObject]?) -> Void) {
+    final public func application(_ application: UIApplication, handleWatchKitExtensionRequest userInfo: [AnyHashable : Any]?, reply: @escaping ([AnyHashable : Any]?) -> Swift.Void) {
         guard let watchKitCapableSelf = self as? WatchKitCapable else {
             noteImproperAPIUsage("Received WatchKit extension request but \(self) does not conform to WatchKitCapable. Ignoring.")
             reply(nil)
@@ -49,6 +49,6 @@ extension SuperDelegate {
         // iOS 8.4 calls application(_:handleWatchKitExtensionRequest:userInfo:reply:) prior to the application finishing launching. Make sure our application is set up once.
         setupApplicationOnce()
         
-        watchKitCapableSelf.handleWatchKitExtensionRequest(userInfo, reply: reply)
+        watchKitCapableSelf.handleWatchKitExtensionRequest(userInfo: userInfo, reply: reply)
     }
 }
