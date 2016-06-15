@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/cocoapods/l/SuperDelegate.svg)](http://cocoadocs.org/docsets/SuperDelegate)
 [![Platform](https://img.shields.io/cocoapods/p/SuperDelegate.svg)](http://cocoadocs.org/docsets/SuperDelegate)
 
-SuperDelegate provides a clean application delegate interface and protects you from bugs in the application lifecycle.
+SuperDelegate provides a consistent App Delegate API across all iOS SDKs while protecting you from bugs in the application lifecycle.
 
 ## Purpose
 
