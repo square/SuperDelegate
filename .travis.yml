@@ -3,6 +3,6 @@ osx_image: xcode7.3
 before_script:
     - bundle install
 script:
-    - xcodebuild -project SuperDelegate.xcodeproj -scheme "SuperDelegate" -sdk iphonesimulator -configuration Debug -PBXBuildsContinueAfterErrors=0 build test
-    - xcodebuild -project Sample/SampleDelegate/SampleDelegate.xcodeproj -scheme "SuperDelegate" -sdk iphonesimulator -configuration Debug -PBXBuildsContinueAfterErrors=0 build
+    - xctool -project SuperDelegate.xcodeproj -scheme SuperDelegate -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPad Air 2" test
+    - xctool -project Sample/SampleDelegate/SampleDelegate.xcodeproj -scheme SampleDelegate -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPad Air 2" build
     - pod lib lint --verbose --fail-fast
