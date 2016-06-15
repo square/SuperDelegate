@@ -4,4 +4,5 @@ before_script:
     - bundle install
 script:
     - xcodebuild -project SuperDelegate.xcodeproj -scheme "SuperDelegate" -sdk iphonesimulator -configuration Debug -PBXBuildsContinueAfterErrors=0 build test
+    - xcodebuild -project Sample/SampleDelegate/SampleDelegate.xcodeproj -scheme "SuperDelegate" -sdk iphonesimulator -configuration Debug -PBXBuildsContinueAfterErrors=0 build
     - pod lib lint --verbose --fail-fast
