@@ -22,7 +22,7 @@ import Foundation
 
 
 public struct RemoteNotification: CustomStringConvertible, Equatable {
-    /// An object representing the user-facing alert. Derived from userInfo["alert"]
+    /// An object representing the user-facing alert. Derived from userInfo["aps"]["alert"]
     public let alert: Alert?
     /// The badge set on the remote notification. Derived from userInfo["badge"]
     public let badge: Int?
@@ -43,18 +43,16 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
         }
         
         alert = Alert(remoteNotification: remoteNotification)
-        badge = remoteNotification[badgeKey] as? Int
-        sound = remoteNotification[soundKey] as? String
-        contentAvailable = remoteNotification[contentAvailableKey] != nil
-        categoryIdentifier = remoteNotification[categoryKey] as? String
+        
+        let apnsDictionary = remoteNotification[APSServiceKey] as? [String : AnyObject]
+        badge = apnsDictionary?[badgeKey] as? Int
+        sound = apnsDictionary?[soundKey] as? String
+        contentAvailable = apnsDictionary?[contentAvailableKey] != nil
+        categoryIdentifier = apnsDictionary?[categoryKey] as? String
         remoteNotificationDictionary = remoteNotification
         
         var customFields = remoteNotification
-        customFields.removeValueForKey(alertKey)
-        customFields.removeValueForKey(badgeKey)
-        customFields.removeValueForKey(soundKey)
-        customFields.removeValueForKey(contentAvailableKey)
-        customFields.removeValueForKey(categoryKey)
+        customFields.removeValueForKey(APSServiceKey)
         
         userInfo = customFields
     }
@@ -68,29 +66,39 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
     // MARK: Alert
     
     public struct Alert: Equatable {
-        /// The alert message text. Derived from userInfo["alert"]["body"]
+        /// The alert message text. Derived from userInfo["aps"]["alert"]["body"] or userInfo["aps"]["alert"]
         public let body: String?
-        /// The localization key for the alert message text. Derived from userInfo["alert"]["loc-key"]
+        /// The localization key for the alert message text. Derived from userInfo["aps"]["alert"]["loc-key"]
         public let bodyLocalizationKey: String?
-        /// The localization arguments for the alert message text. Derived from userInfo["alert"]["loc-args"]
+        /// The localization arguments for the alert message text. Derived from userInfo["aps"]["alert"]["loc-args"]
         public let bodyLocalizationArguments: [String]?
         
-        /// The localization key for the alert action button. Derived from userInfo["alert"]["action-loc-key"]
+        /// The localization key for the alert action button. Derived from userInfo["aps"]["alert"]["action-loc-key"]
         public let actionLocalizationKey: String?
         
-        /// The filename of an image file in teh app bundle, with or without the filename extension. Derived from userInfo["alert"]["launch-image"]
+        /// The filename of an image file in the app bundle, with or without the filename extension. Derived from userInfo["aps"]["alert"]["launch-image"]
         public let launchImageName: String?
         
-        /// The title shown on the Apple Watch. Derived from userInfo["alert"]["title"]
+        /// The title shown on the Apple Watch. Derived from userInfo["aps"]["alert"]["title"]
         public let wearableTitle: String?
-        /// The localization key for the title shown on the Apple Watch. Derived from userInfo["alert"]["title-loc-key"]
+        /// The localization key for the title shown on the Apple Watch. Derived from userInfo["aps"]["alert"]["title-loc-key"]
         public let wearableTitleLocalizationKey: String?
-        /// The localization arguments for the title shown on the Apple Watch. Derived from userInfo["alert"]["title-loc-args"]
+        /// The localization arguments for the title shown on the Apple Watch. Derived from userInfo["aps"]["alert"]["title-loc-args"]
         public let wearableTitleLocalizationArguments: [String]?
         
         init?(remoteNotification: [String : AnyObject]) {
-            guard let alert = remoteNotification[alertKey] else {
-                return nil
+            guard let alert = remoteNotification[APSServiceKey]?[alertKey] as? [String : AnyObject] else {
+                body = remoteNotification[APSServiceKey]?[alertKey] as? String
+                
+                bodyLocalizationKey = nil
+                bodyLocalizationArguments = nil
+                actionLocalizationKey = nil
+                launchImageName = nil
+                wearableTitle = nil
+                wearableTitleLocalizationKey = nil
+                wearableTitleLocalizationArguments = nil
+
+                return
             }
             
             body = alert[alertBodyKey] as? String
@@ -202,7 +210,13 @@ public func ==(lhs: RemoteNotification.Alert, rhs: RemoteNotification.Alert) -> 
 }
 
 
-// MARK: Top Level APNS Keys
+// MARK: Top Level APS Keys
+
+
+let APSServiceKey = "aps"
+
+
+// MARK: APS Keys
 
 
 let alertKey = "alert"
@@ -212,7 +226,7 @@ let contentAvailableKey = "content-available"
 let categoryKey = "category"
 
 
-// MARK: Alert APNS Keys
+// MARK: Alert Keys
 
 
 let alertBodyKey = "body"

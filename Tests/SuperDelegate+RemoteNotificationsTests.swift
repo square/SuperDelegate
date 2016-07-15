@@ -48,20 +48,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_didFinishLaunchingWithOptions_loadsInterfaceWithRemoteNotification() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -87,20 +89,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_didReceiveRemoteNotification_deliversRemoteNotificationWithProperOrigin() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -135,20 +139,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_didReceiveRemoteNotification_dropsRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -182,20 +188,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_didReceiveRemoteNotification_doesNotDropRemoteNotificationDeliveredToLoadInterfaceWithLaunchItemAfterApplicationWillEnterForeground() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -231,20 +239,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_didReceiveRemoteNotification_doesNotDropRemoteNotificationDifferentThanRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -290,20 +300,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_receivingRemoteNotificationAction_notifies() {
         let remoteNotificationActionCapableDelegate = RemoteNotificationActionCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -325,20 +337,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     func test_receivingLocalNotificationWithResponseInfoAction_notifies() {
         let remoteNotificationActionCapableDelegate = RemoteNotificationActionCapableDelegate()
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
