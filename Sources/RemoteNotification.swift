@@ -42,6 +42,8 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
             return nil
         }
         
+        // Parse the notification payload.
+        // See https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/TheNotificationPayload.html for more information on expected values.
         alert = Alert(remoteNotification: remoteNotification)
         
         let apnsDictionary = remoteNotification[APSServiceKey] as? [String : AnyObject]
@@ -87,8 +89,13 @@ public struct RemoteNotification: CustomStringConvertible, Equatable {
         public let wearableTitleLocalizationArguments: [String]?
         
         init?(remoteNotification: [String : AnyObject]) {
+            // Alert is represented as either a dictionary or a single string.
             guard let alert = remoteNotification[APSServiceKey]?[alertKey] as? [String : AnyObject] else {
-                body = remoteNotification[APSServiceKey]?[alertKey] as? String
+                guard let body = remoteNotification[APSServiceKey]?[alertKey] as? String else {
+                    return nil
+                }
+                
+                self.body = body
                 
                 bodyLocalizationKey = nil
                 bodyLocalizationArguments = nil
