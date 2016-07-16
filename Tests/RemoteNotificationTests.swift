@@ -25,20 +25,22 @@ class RemoteNotificationTests: XCTestCase {
     
     func test_RemoteNotification_initWithFullRemoteNotificationDictionary() {
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            alertKey : [
-                alertBodyKey : alertBody,
-                alertBodyLocKey : alertBodyLocalizationKey,
-                alertBodyLocArgsKey : alertBodyLocalizationArgs,
-                alertActionLocKey : alertActionLocalizationKey,
-                alertLaunchImageKey : alertLaunchImageName,
-                alertWearableTitleKey : alertWearableTitle,
-                alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
-                alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+            APSServiceKey : [
+                alertKey : [
+                    alertBodyKey : alertBody,
+                    alertBodyLocKey : alertBodyLocalizationKey,
+                    alertBodyLocArgsKey : alertBodyLocalizationArgs,
+                    alertActionLocKey : alertActionLocalizationKey,
+                    alertLaunchImageKey : alertLaunchImageName,
+                    alertWearableTitleKey : alertWearableTitle,
+                    alertWearableTitleLocKey : alertWearableTitleLocalizationKey,
+                    alertWearableTitleLocArgsKey : alertWearableTitleLocalizationArgs
+                ],
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
             ],
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -85,12 +87,56 @@ class RemoteNotificationTests: XCTestCase {
         XCTAssertNotEqual(remoteNotification, RemoteNotification(remoteNotification: differentRemoteNotificationDictionary))
     }
     
+    func test_RemoteNotification_initWithSimpleAlertRemoteNotificationDictionary() {
+        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+            APSServiceKey : [
+                alertKey : alertBody,
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
+            ],
+            userInfoCustomKey1 : userInfoCustomValue1,
+            userInfoCustomKey2 : userInfoCustomValue2,
+            userInfoCustomKey3 : userInfoCustomValue3
+        ]
+        
+        guard let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(alertBody, remoteNotification.alert?.body)
+        XCTAssertEqual(nil, remoteNotification.alert?.bodyLocalizationKey)
+        XCTAssertEqual(nil, remoteNotification.alert?.bodyLocalizationArguments?.first)
+        XCTAssertEqual(nil, remoteNotification.alert?.launchImageName)
+        XCTAssertEqual(nil, remoteNotification.alert?.wearableTitle)
+        XCTAssertEqual(nil, remoteNotification.alert?.wearableTitleLocalizationKey)
+        XCTAssertEqual(nil, remoteNotification.alert?.wearableTitleLocalizationArguments?.first)
+        
+        XCTAssertEqual(badge, remoteNotification.badge)
+        XCTAssertEqual(sound, remoteNotification.sound)
+        XCTAssertTrue(remoteNotification.contentAvailable)
+        XCTAssertEqual(categoryIdentifier, remoteNotification.categoryIdentifier)
+        XCTAssertEqual(remoteNotification.userInfo.count, 3)
+        XCTAssertEqual(remoteNotification.userInfo[userInfoCustomKey1] as? String, userInfoCustomValue1)
+        XCTAssertEqual(remoteNotification.userInfo[userInfoCustomKey2] as? String, userInfoCustomValue2)
+        XCTAssertEqual(remoteNotification.userInfo[userInfoCustomKey3] as? Int, userInfoCustomValue3)
+        
+        XCTAssertTrue(remoteNotification == RemoteNotification(remoteNotification: remoteNotificationDictionary)!)
+        var differentRemoteNotificationDictionary = remoteNotificationDictionary
+        differentRemoteNotificationDictionary[userInfoCustomKey3 + "many different"] = "wow"
+        XCTAssertNotEqual(remoteNotification, RemoteNotification(remoteNotification: differentRemoteNotificationDictionary))
+    }
+    
     func test_RemoteNotification_initWithSilentRemoteNotificationDictionary() {
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            badgeKey : badge,
-            soundKey : sound,
-            contentAvailableKey : contentAvailable,
-            categoryKey : categoryIdentifier,
+            APSServiceKey : [
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                categoryKey : categoryIdentifier,
+            ],
             userInfoCustomKey1 : userInfoCustomValue1,
             userInfoCustomKey2 : userInfoCustomValue2,
             userInfoCustomKey3 : userInfoCustomValue3
@@ -119,15 +165,27 @@ class RemoteNotificationTests: XCTestCase {
         XCTAssertEqual(remoteNotification.userInfo[userInfoCustomKey3] as? Int, userInfoCustomValue3)
         
         XCTAssertTrue(remoteNotification == RemoteNotification(remoteNotification: remoteNotificationDictionary)!)
-        var differentRemoteNotificationDictionary = remoteNotificationDictionary
-        differentRemoteNotificationDictionary.removeValueForKey(categoryKey)
+        let differentRemoteNotificationDictionary: [NSObject : AnyObject] = [
+            APSServiceKey : [
+                badgeKey : badge,
+                soundKey : sound,
+                contentAvailableKey : contentAvailable,
+                // Note that categoryKey is missing.
+            ],
+            userInfoCustomKey1 : userInfoCustomValue1,
+            userInfoCustomKey2 : userInfoCustomValue2,
+            userInfoCustomKey3 : userInfoCustomValue3
+        ]
+
         XCTAssertNotEqual(remoteNotification, RemoteNotification(remoteNotification: differentRemoteNotificationDictionary))
     }
     
     func test_RemoteNotification_initWithBadgeChangeRemoteNotificationDictionary() {
         let remoteNotificationDictionary: [NSObject : AnyObject] = [
-            badgeKey : badge,
-            soundKey : sound,
+            APSServiceKey : [
+                badgeKey : badge,
+                soundKey : sound,
+            ],
         ]
         
         guard let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary) else {
