@@ -22,12 +22,14 @@ Example: `application(_:didFinishLaunchingWithOptions:)` and `application(_:didR
 
 ### CocoaPods
 
-To install SuperDelegate in your iOS project with [CocoaPods](http://cocoapods.org), add the following to your `Podfile`:
+To install SuperDelegate in your iOS project running Xcode 7 with [CocoaPods](http://cocoapods.org), add the following to your `Podfile`:
 
 ```
 platform :ios, '8.0'
-pod 'SuperDelegate'
+pod 'SuperDelegate', '~> 0.8.0'
 ```
+
+Xcode 8 and Swift 3 projects should use 0.9.0
 
 ### Carthage
 
