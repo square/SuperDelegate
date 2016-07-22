@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'SuperDelegate'
-  s.version  = '0.8.1'
+  s.version  = '0.8.2'
   s.license  = 'Apache License, Version 2.0'
   s.summary  = 'SuperDelegate provides a clean application delegate interface and protects you from bugs in the application lifecycle.'
   s.homepage = 'https://github.com/square/SuperDelegate'
