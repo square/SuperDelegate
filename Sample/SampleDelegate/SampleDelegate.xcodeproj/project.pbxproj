@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EAB6215D1D877D930087F1D3 /* SuperDelegate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; };
+		EAB6215E1D877D930087F1D3 /* SuperDelegate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EAECD1A41D0CABFD008BB9F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAECD1A31D0CABFD008BB9F5 /* AppDelegate.swift */; };
 		EAECD1A61D0CABFD008BB9F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAECD1A51D0CABFD008BB9F5 /* ViewController.swift */; };
 		EAECD1AB1D0CABFD008BB9F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAECD1AA1D0CABFD008BB9F5 /* Assets.xcassets */; };
-		EAECD1C11D0CAC25008BB9F5 /* SuperDelegate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		EAB6215F1D877D930087F1D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAECD1B51D0CAC07008BB9F5 /* SuperDelegate.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EA65F98D1CBF06EB00CBA8E3;
+			remoteInfo = SuperDelegate;
+		};
 		EAECD1BA1D0CAC07008BB9F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAECD1B51D0CAC07008BB9F5 /* SuperDelegate.xcodeproj */;
@@ -28,14 +36,21 @@
 			remoteGlobalIDString = EA65F9981CBF06EB00CBA8E3;
 			remoteInfo = SuperDelegateTests;
 		};
-		EAECD1BF1D0CAC20008BB9F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EAECD1B51D0CAC07008BB9F5 /* SuperDelegate.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = EA65F98D1CBF06EB00CBA8E3;
-			remoteInfo = SuperDelegate;
-		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EAB621611D877D930087F1D3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EAB6215E1D877D930087F1D3 /* SuperDelegate.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EAECD1A01D0CABFD008BB9F5 /* SampleDelegate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleDelegate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAECD1C11D0CAC25008BB9F5 /* SuperDelegate.framework in Frameworks */,
+				EAB6215D1D877D930087F1D3 /* SuperDelegate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,11 +120,12 @@
 				EAECD19C1D0CABFD008BB9F5 /* Sources */,
 				EAECD19D1D0CABFD008BB9F5 /* Frameworks */,
 				EAECD19E1D0CABFD008BB9F5 /* Resources */,
+				EAB621611D877D930087F1D3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				EAECD1C01D0CAC20008BB9F5 /* PBXTargetDependency */,
+				EAB621601D877D930087F1D3 /* PBXTargetDependency */,
 			);
 			name = SampleDelegate;
 			productName = SampleDelegate;
@@ -196,10 +212,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		EAECD1C01D0CAC20008BB9F5 /* PBXTargetDependency */ = {
+		EAB621601D877D930087F1D3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SuperDelegate;
-			targetProxy = EAECD1BF1D0CAC20008BB9F5 /* PBXContainerItemProxy */;
+			targetProxy = EAB6215F1D877D930087F1D3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -291,6 +307,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SampleDelegate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SampleDelegate;
@@ -302,6 +319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SampleDelegate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SampleDelegate;
