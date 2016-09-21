@@ -77,8 +77,8 @@ To opt into more AppDelegate features, have your `AppDelegate` class conform to 
 
 ## Versions
 * 0.8.* – Swift 2.3 and Xcode 7.3+. This version has been thouroughly vetted.
-* 0.9.* – Swift 3.0 and Beta Xcode 8. This version is in active development.
-* 1.0 – Will be released when iOS 10 is near release.
+* 0.9.* – Swift 3.0 and Xcode 8+.
+* 1.0 – Swift 3.0, Xcode 8+, and iOS 10 SDK adoption.
 
 ## Contributing
 

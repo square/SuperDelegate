@@ -34,17 +34,17 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         
         userActivityCapableDelegate.shouldHandleNextUserActivity = false
         let launchOptions = [
-            UIApplicationLaunchOptionsUserActivityDictionaryKey : [
-                ApplicationLaunchOptionsUserActivityKey : NSUserActivity(activityType: userActivityType),
-                UIApplicationLaunchOptionsUserActivityTypeKey : userActivityType
+            UIApplicationLaunchOptionsKey.userActivityDictionary : [
+                UIApplicationLaunchOptionsKey.userActivity : NSUserActivity(activityType: userActivityType),
+                UIApplicationLaunchOptionsKey.userActivityType : userActivityType
             ]
         ]
         
-        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch userActivityCapableDelegate.launchItem {
-        case .NoItem:
+        case .none:
             break
         default:
             XCTFail()
@@ -56,9 +56,10 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivityType = "does this look like user activity to you?"
         
         userActivityCapableDelegate.shouldHandleNextUserActivity = false
-        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.sharedApplication(), continueUserActivity: NSUserActivity(activityType: userActivityType)) { (_) in
+        XCTAssertFalse(userActivityCapableDelegate.application(UIApplication.shared, continue: NSUserActivity(activityType: userActivityType)) { (_) in
             // Nothing to do here.
-        })
+            }
+        )
         
         XCTAssertNil(userActivityCapableDelegate.continuedUserActivity)
     }
@@ -67,10 +68,10 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivityCapableDelegate = UserActivityCapableDelegate()
         let userActivity = NSUserActivity(activityType: "does this look like user activity to you?")
         
-        userActivityCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), continueUserActivity: userActivity) { (_) in
+        userActivityCapableDelegate.loadInterfaceOnce(with: .none)
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, continue: userActivity) { (_) in
             // Nothing to do here.
-        })
+            })
         
         XCTAssertEqual(userActivity, userActivityCapableDelegate.continuedUserActivity)
     }
@@ -80,17 +81,17 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivityType = "does this look like user activity to you?"
         
         let launchOptions = [
-            UIApplicationLaunchOptionsUserActivityDictionaryKey : [
-                ApplicationLaunchOptionsUserActivityKey : NSUserActivity(activityType: userActivityType),
-                UIApplicationLaunchOptionsUserActivityTypeKey : userActivityType
+            UIApplicationLaunchOptionsKey.userActivityDictionary : [
+                UIApplicationLaunchOptionsKey.userActivity : NSUserActivity(activityType: userActivityType),
+                UIApplicationLaunchOptionsKey.userActivityType : userActivityType
             ]
         ]
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch userActivityCapableDelegate.launchItem {
-        case let .UserActivityItem(launchUserActivity):
+        case let .userActivity(launchUserActivity):
             XCTAssertEqual(userActivityType, launchUserActivity.activityType)
         default:
             XCTFail()
@@ -103,17 +104,17 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivity = NSUserActivity(activityType: userActivityType)
         
         let launchOptions = [
-            UIApplicationLaunchOptionsUserActivityDictionaryKey : [
-                ApplicationLaunchOptionsUserActivityKey : userActivity,
-                UIApplicationLaunchOptionsUserActivityTypeKey : userActivityType
+            UIApplicationLaunchOptionsKey.userActivityDictionary : [
+                UIApplicationLaunchOptionsKey.userActivity : userActivity,
+                UIApplicationLaunchOptionsKey.userActivityType : userActivityType
             ]
         ]
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch userActivityCapableDelegate.launchItem {
-        case let .UserActivityItem(launchUserActivity):
+        case let .userActivity(launchUserActivity):
             XCTAssertEqual(userActivityType, launchUserActivity.activityType)
         default:
             XCTFail()
@@ -121,7 +122,7 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         
         XCTAssertNil(userActivityCapableDelegate.continuedUserActivity)
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), continueUserActivity: userActivity, restorationHandler: { (_) in
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, continue: userActivity, restorationHandler: { (_) in
             // Nothing to do here
         }))
         
@@ -133,19 +134,18 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivityType = "does this look like user activity to you?"
         let userActivity = NSUserActivity(activityType: userActivityType)
         
-        
         let launchOptions = [
-            UIApplicationLaunchOptionsUserActivityDictionaryKey : [
-                ApplicationLaunchOptionsUserActivityKey : userActivity,
-                UIApplicationLaunchOptionsUserActivityTypeKey : userActivityType
+            UIApplicationLaunchOptionsKey.userActivityDictionary : [
+                UIApplicationLaunchOptionsKey.userActivity : userActivity,
+                UIApplicationLaunchOptionsKey.userActivityType : userActivityType
             ]
         ]
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch userActivityCapableDelegate.launchItem {
-        case let .UserActivityItem(launchUserActivity):
+        case let .userActivity(launchUserActivity):
             XCTAssertEqual(userActivityType, launchUserActivity.activityType)
         default:
             XCTFail()
@@ -153,9 +153,9 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         
         XCTAssertNil(userActivityCapableDelegate.continuedUserActivity)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), continueUserActivity: userActivity, restorationHandler: { (_) in
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, continue: userActivity, restorationHandler: { (_) in
             // Nothing to do here
         }))
         
@@ -167,19 +167,18 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         let userActivityType = "does this look like user activity to you?"
         let userActivity = NSUserActivity(activityType: userActivityType)
         
-        
         let launchOptions = [
-            UIApplicationLaunchOptionsUserActivityDictionaryKey : [
-                ApplicationLaunchOptionsUserActivityKey : userActivity,
-                UIApplicationLaunchOptionsUserActivityTypeKey : userActivityType
+            UIApplicationLaunchOptionsKey.userActivityDictionary : [
+                UIApplicationLaunchOptionsKey.userActivity : userActivity,
+                UIApplicationLaunchOptionsKey.userActivityType : userActivityType
             ]
         ]
         
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch userActivityCapableDelegate.launchItem {
-        case let .UserActivityItem(launchUserActivity):
+        case let .userActivity(launchUserActivity):
             XCTAssertEqual(userActivityType, launchUserActivity.activityType)
         default:
             XCTFail()
@@ -188,7 +187,7 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
         XCTAssertNil(userActivityCapableDelegate.continuedUserActivity)
         
         let anotherUserActivity = NSUserActivity(activityType: "Some other user activity")
-        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.sharedApplication(), continueUserActivity: anotherUserActivity, restorationHandler: { (_) in
+        XCTAssertTrue(userActivityCapableDelegate.application(UIApplication.shared, continue: anotherUserActivity, restorationHandler: { (_) in
             // Nothing to do here
         }))
         
@@ -202,12 +201,12 @@ class SuperDelegateUserActivityTests: SuperDelegateTests {
 
 class UserActivityCapableDelegate: AppLaunchedDelegate, UserActivityCapable {
     var shouldHandleNextUserActivity = true
-    func canHandleUserActivity(userActivity: NSUserActivity) -> Bool {
+    func canResume(userActivity: NSUserActivity) -> Bool {
         return shouldHandleNextUserActivity
     }
     
     var continuedUserActivity: NSUserActivity?
-    func continueUserActivity(userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+    func resume(userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Swift.Void) -> Bool {
         continuedUserActivity = userActivity
         return true
     }

@@ -33,21 +33,26 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_registerForRemoteNotificationsWithDeviceToken_forwardsToken() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let deviceToken = "a token".dataUsingEncoding(NSUTF8StringEncoding)!
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        let deviceToken = "a token".data(using: String.Encoding.utf8)!
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
         XCTAssertEqual(deviceToken, remoteNotificationCapableDelegate.registeredDeviceToken)
     }
     
     func test_didFailToRegisterForRemoteNotificationsWithError_forwardsError() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
         let registrationError = NSError(domain: "push registration test", code: 0, userInfo: nil)
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didFailToRegisterForRemoteNotificationsWithError: registrationError)
-        XCTAssertEqual(registrationError, remoteNotificationCapableDelegate.registerFailure)
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didFailToRegisterForRemoteNotificationsWithError: registrationError)
+        if let registeredFailure = remoteNotificationCapableDelegate.registerFailure as? NSError {
+            XCTAssertEqual(registrationError, registeredFailure)
+            
+        } else {
+            XCTFail()
+        }
     }
     
     func test_didFinishLaunchingWithOptions_loadsInterfaceWithRemoteNotification() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -71,15 +76,15 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary)!
         
         XCTAssertTrue(
-            remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(),
-                didFinishLaunchingWithOptions: [
-                    UIApplicationLaunchOptionsRemoteNotificationKey : remoteNotificationDictionary
+            remoteNotificationCapableDelegate.application(UIApplication.shared,
+                                                          didFinishLaunchingWithOptions: [
+                                                            UIApplicationLaunchOptionsKey.remoteNotification : remoteNotificationDictionary
                 ]
             )
         )
         
         switch remoteNotificationCapableDelegate.launchItem {
-        case let .RemoteNotificationItem(launchRemoteNotification):
+        case let .remoteNotification(launchRemoteNotification):
             XCTAssertEqual(launchRemoteNotification, remoteNotification)
         default:
             XCTFail()
@@ -88,7 +93,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_didReceiveRemoteNotification_deliversRemoteNotificationWithProperOrigin() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -111,34 +116,34 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         ]
         let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary)!
         
-        remoteNotificationCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        remoteNotificationCapableDelegate.loadInterfaceOnce(with: .none)
         
         var fetchCompletionHandlerExecuted = false
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveRemoteNotification: remoteNotificationDictionary) { (_) in
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didReceiveRemoteNotification: remoteNotificationDictionary) { (_) in
             fetchCompletionHandlerExecuted = true
         }
         
         XCTAssertTrue(fetchCompletionHandlerExecuted)
         
         XCTAssertEqual(remoteNotificationCapableDelegate.receivedRemoteNotification, remoteNotification)
-        XCTAssertEqual(remoteNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.UserTappedToBringAppToForeground)
+        XCTAssertEqual(remoteNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.userTappedToBringAppToForeground)
         
         remoteNotificationCapableDelegate.applicationIsInForeground = true
         
         fetchCompletionHandlerExecuted = false
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveRemoteNotification: remoteNotificationDictionary) { (_) in
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didReceiveRemoteNotification: remoteNotificationDictionary) { (_) in
             fetchCompletionHandlerExecuted = true
         }
         
         XCTAssertTrue(fetchCompletionHandlerExecuted)
         
         XCTAssertEqual(remoteNotificationCapableDelegate.receivedRemoteNotification, remoteNotification)
-        XCTAssertEqual(remoteNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.DeliveredWhileInForground)
+        XCTAssertEqual(remoteNotificationCapableDelegate.receivedNotificationOrigin, UserNotificationOrigin.deliveredWhileInForeground)
     }
     
     func test_didReceiveRemoteNotification_dropsRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -162,15 +167,15 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary)!
         
         XCTAssertTrue(
-            remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(),
-                didFinishLaunchingWithOptions: [
-                    UIApplicationLaunchOptionsRemoteNotificationKey : remoteNotificationDictionary
+            remoteNotificationCapableDelegate.application(UIApplication.shared,
+                                                          didFinishLaunchingWithOptions: [
+                                                            UIApplicationLaunchOptionsKey.remoteNotification : remoteNotificationDictionary
                 ]
             )
         )
         
         switch remoteNotificationCapableDelegate.launchItem {
-        case let .RemoteNotificationItem(launchRemoteNotification):
+        case let .remoteNotification(launchRemoteNotification):
             XCTAssertEqual(launchRemoteNotification, remoteNotification)
         default:
             XCTFail()
@@ -178,7 +183,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         
         XCTAssertNil(remoteNotificationCapableDelegate.receivedRemoteNotification)
         
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveRemoteNotification: remoteNotificationDictionary, fetchCompletionHandler: { (_) in
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didReceiveRemoteNotification: remoteNotificationDictionary, fetchCompletionHandler: { (_) in
             // Nothing to do here.
         })
         
@@ -187,7 +192,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_didReceiveRemoteNotification_doesNotDropRemoteNotificationDeliveredToLoadInterfaceWithLaunchItemAfterApplicationWillEnterForeground() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -211,15 +216,15 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary)!
         
         XCTAssertTrue(
-            remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(),
-                didFinishLaunchingWithOptions: [
-                    UIApplicationLaunchOptionsRemoteNotificationKey : remoteNotificationDictionary
+            remoteNotificationCapableDelegate.application(UIApplication.shared,
+                                                          didFinishLaunchingWithOptions: [
+                                                            UIApplicationLaunchOptionsKey.remoteNotification : remoteNotificationDictionary
                 ]
             )
         )
         
         switch remoteNotificationCapableDelegate.launchItem {
-        case let .RemoteNotificationItem(launchRemoteNotification):
+        case let .remoteNotification(launchRemoteNotification):
             XCTAssertEqual(launchRemoteNotification, remoteNotification)
         default:
             XCTFail()
@@ -227,9 +232,9 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         
         XCTAssertNil(remoteNotificationCapableDelegate.receivedRemoteNotification)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveRemoteNotification: remoteNotificationDictionary, fetchCompletionHandler: { (_) in
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didReceiveRemoteNotification: remoteNotificationDictionary, fetchCompletionHandler: { (_) in
             // Nothing to do here.
         })
         
@@ -238,7 +243,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_didReceiveRemoteNotification_doesNotDropRemoteNotificationDifferentThanRemoteNotificationDeliveredToLoadInterfaceWithLaunchItem() {
         let remoteNotificationCapableDelegate = RemoteNotificationCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -262,15 +267,15 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let remoteNotification = RemoteNotification(remoteNotification: remoteNotificationDictionary)!
         
         XCTAssertTrue(
-            remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(),
-                didFinishLaunchingWithOptions: [
-                    UIApplicationLaunchOptionsRemoteNotificationKey : remoteNotificationDictionary
+            remoteNotificationCapableDelegate.application(UIApplication.shared,
+                                                          didFinishLaunchingWithOptions: [
+                                                            UIApplicationLaunchOptionsKey.remoteNotification : remoteNotificationDictionary
                 ]
             )
         )
         
         switch remoteNotificationCapableDelegate.launchItem {
-        case let .RemoteNotificationItem(launchRemoteNotification):
+        case let .remoteNotification(launchRemoteNotification):
             XCTAssertEqual(launchRemoteNotification, remoteNotification)
         default:
             XCTFail()
@@ -278,15 +283,15 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         
         XCTAssertNil(remoteNotificationCapableDelegate.receivedRemoteNotification)
         
-        let otherRemoteNotificationDictionary: [NSObject : AnyObject] = [
+        let otherRemoteNotificationDictionary: [AnyHashable : Any] = [
             alertKey : [
                 alertBodyKey : "other " + alertBody,
                 alertBodyLocKey : "other" + alertBodyLocalizationKey,
             ]
         ]
         let otherRemoteNotification = RemoteNotification(remoteNotification: otherRemoteNotificationDictionary)!
-
-        remoteNotificationCapableDelegate.application(UIApplication.sharedApplication(), didReceiveRemoteNotification: otherRemoteNotificationDictionary, fetchCompletionHandler: { (_) in
+        
+        remoteNotificationCapableDelegate.application(UIApplication.shared, didReceiveRemoteNotification: otherRemoteNotificationDictionary, fetchCompletionHandler: { (_) in
             // Nothing to do here.
         })
         
@@ -299,7 +304,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_receivingRemoteNotificationAction_notifies() {
         let remoteNotificationActionCapableDelegate = RemoteNotificationActionCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -324,7 +329,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let actionIdentifier = "some action"
         
         var completionHandlerExecuted = false
-        remoteNotificationActionCapableDelegate.application(UIApplication.sharedApplication(), handleActionWithIdentifier: actionIdentifier, forRemoteNotification: remoteNotificationDictionary) {
+        remoteNotificationActionCapableDelegate.application(UIApplication.shared, handleActionWithIdentifier: actionIdentifier, forRemoteNotification: remoteNotificationDictionary) {
             completionHandlerExecuted = true
         }
         
@@ -336,7 +341,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
     
     func test_receivingLocalNotificationWithResponseInfoAction_notifies() {
         let remoteNotificationActionCapableDelegate = RemoteNotificationActionCapableDelegate()
-        let remoteNotificationDictionary: [NSObject : AnyObject] = [
+        let remoteNotificationDictionary: [AnyHashable : Any] = [
             APSServiceKey : [
                 alertKey : [
                     alertBodyKey : alertBody,
@@ -362,7 +367,7 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
         let responseInfo = ["a response" : "object"]
         
         var completionHandlerExecuted = false
-        remoteNotificationActionCapableDelegate.application(UIApplication.sharedApplication(), handleActionWithIdentifier: actionIdentifier, forRemoteNotification: remoteNotificationDictionary, withResponseInfo: responseInfo) {
+        remoteNotificationActionCapableDelegate.application(UIApplication.shared, handleActionWithIdentifier: actionIdentifier, forRemoteNotification: remoteNotificationDictionary, withResponseInfo: responseInfo) {
             completionHandlerExecuted = true
         }
         
@@ -379,22 +384,22 @@ class SuperDelegateRemoteNotificationTests: SuperDelegateTests {
 
 class RemoteNotificationCapableDelegate: AppLaunchedDelegate, RemoteNotificationCapable {
     
-    var registeredDeviceToken: NSData?
-    func didRegisterForRemoteNotificationsWithToken(deviceToken: NSData) {
+    var registeredDeviceToken: Data?
+    func didRegisterForRemoteNotifications(withDeviceToken deviceToken: Data) {
         registeredDeviceToken = deviceToken
     }
     
-    var registerFailure: NSError?
-    func didFailToRegisterForRemoteNotificationsWithError(error: NSError) {
+    var registerFailure: Error?
+    func didFailToRegisterForRemoteNotifications(withError error: Error) {
         registerFailure = error
     }
     
     var receivedRemoteNotification: RemoteNotification?
     var receivedNotificationOrigin: UserNotificationOrigin?
-    func didReceiveRemoteNotification(remoteNotification: RemoteNotification, notificationOrigin: UserNotificationOrigin, fetchCompletionHandler completionHandler: ((UIBackgroundFetchResult) -> Void)) {
+    func didReceive(remoteNotification: RemoteNotification, origin: UserNotificationOrigin, fetchCompletionHandler completionHandler: @escaping ((UIBackgroundFetchResult) -> Swift.Void)) {
         receivedRemoteNotification = remoteNotification
-        receivedNotificationOrigin = notificationOrigin
-        completionHandler(.NoData)
+        receivedNotificationOrigin = origin
+        completionHandler(.noData)
     }
 }
 
@@ -408,14 +413,14 @@ class RemoteNotificationActionCapableDelegate: RemoteNotificationCapableDelegate
         return UIUserNotificationSettings()
     }
     
-    func didReceiveUserNotificationPermissions(userNotificationPermissionsGranted: UserNotificationPermissionsGranted) {
+    func didReceive(userNotificationPermissions: UserNotificationPermissionsGranted) {
         
     }
     
     var handledActionIdentifier: String? = ""
-    var handledRemoteNotification = RemoteNotification(remoteNotification: [NSObject : AnyObject]())
-    var handledResponseInfo: [String : AnyObject]? = nil
-    func handleRemoteNotificationActionWithIdentifier(actionIdentifier: String?, forRemoteNotification notification: RemoteNotification, withResponseInfo responseInfo: [String : AnyObject]?, completionHandler: () -> Void) {
+    var handledRemoteNotification = RemoteNotification(remoteNotification: [AnyHashable : Any]())
+    var handledResponseInfo: [String : Any]? = nil
+    func handleRemoteNotificationAction(withActionIdentifier actionIdentifier: String?, forRemoteNotification notification: RemoteNotification, withResponseInfo responseInfo: [String : Any]?, completionHandler: @escaping () -> Swift.Void) {
         handledActionIdentifier = actionIdentifier
         handledRemoteNotification = notification
         handledResponseInfo = responseInfo

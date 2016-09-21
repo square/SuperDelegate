@@ -30,14 +30,14 @@ class SuperDelegateLocationEventsTests: SuperDelegateTests {
     
     func test_applicationDidFinishLaunching_notifiesAboutLocationEvent() {
         let locationEventsCapableDelegate = LocationEventsCapableDelegate()
-        XCTAssertTrue(locationEventsCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocationKey : true]))
+        XCTAssertTrue(locationEventsCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.location : true]))
         XCTAssertTrue(locationEventsCapableDelegate.appLaunchedDuetoLocationEvent)
     }
     
     
     func test_applicationWillFinishLaunching_doesNotNotifyAboutLocationEvent() {
         let locationEventsCapableDelegate = LocationEventsCapableDelegate()
-        XCTAssertTrue(locationEventsCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsLocationKey : true]))
+        XCTAssertTrue(locationEventsCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.location : true]))
         XCTAssertFalse(locationEventsCapableDelegate.appLaunchedDuetoLocationEvent)
     }
 }

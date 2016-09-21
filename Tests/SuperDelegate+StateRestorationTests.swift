@@ -30,17 +30,17 @@ class SuperDelegateStateRestorationTests: SuperDelegateTests {
     
     func test_applicationWillFinishLaunching_loadsInterface() {
         let stateRestorationCapableDelegate = StateRestorationCapableDelegate()
-        XCTAssertTrue(stateRestorationCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(stateRestorationCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
         XCTAssertTrue(stateRestorationCapableDelegate.interfaceLoaded)
         
         switch stateRestorationCapableDelegate.launchItem {
-        case .NoItem:
+        case .none:
             break
         default:
             XCTFail()
         }
         
-        XCTAssertTrue(stateRestorationCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(stateRestorationCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
     }
 }
 
@@ -50,25 +50,25 @@ class SuperDelegateStateRestorationTests: SuperDelegateTests {
 
 class StateRestorationCapableDelegate: AppLaunchedDelegate, StateRestorationCapable {
     
-    func shouldSaveApplicationState(coder: NSCoder) -> Bool {
+    func shouldSaveApplicationState(using coder: NSCoder) -> Bool {
         // Nothing to test here. This method is just a passthrough.
         return true
     }
     
-    func shouldRestoreApplicationState(coder: NSCoder) -> Bool {
+    func shouldRestoreApplicationState(using coder: NSCoder) -> Bool {
         // Nothing to test here. This method is just a passthrough.
         return true
     }
     
-    func willEncodeRestorableStateWithCoder(coder: NSCoder) {
+    func willEncodeRestorableState(using coder: NSCoder) {
         // Nothing to test here. This method is just a passthrough.
     }
     
-    func didDecodeRestorableStateWithCoder(coder: NSCoder) {
+    func didDecodeRestorableState(using coder: NSCoder) {
         // Nothing to test here. This method is just a passthrough.
     }
     
-    func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+    func viewControllerWithRestorationIdentifierPath(identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         // Nothing to test here. This method is just a passthrough.
         return nil;
     }

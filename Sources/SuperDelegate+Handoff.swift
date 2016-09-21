@@ -27,14 +27,13 @@ import Foundation
 public protocol HandoffCapable: UserActivityCapable {
     /// Called whenever your application takes responsibility for notifying users when a continuation activity takes longer than expected. Use this method to provide immediate feedback to the user that an activity is about to continue on this device. The app calls this method as soon as the user confirms that an activity should be continued but possibly before the data associated with that activity is available.
     /// @return true if you want to notify the user that a continuation is in progress or false if you want iOS to notify the user.
-    @warn_unused_result
-    func willContinueUserActivityWithType(userActivityType: String) -> Bool
+    func willContinue(userActivityType: String) -> Bool
     
     /// Called whenever a user activity item managed by UIKit has been updated.
-    func didUpdateUserActivity(userActivity: NSUserActivity)
+    func didUpdate(userActivity: NSUserActivity)
     
     /// Called whenever iOS failed to continue a user activity.
-    func didFailToContinueUserActivityWithType(userActivityType: String, error: NSError)
+    func didFailToContinue(userActivityType: String, error: Error)
 }
 
 
@@ -47,31 +46,31 @@ extension SuperDelegate {
     // MARK: UIApplicationDelegate
     
     
-    @warn_unused_result
-    final public func application(application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+    final public func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
         guard let userActivityCapableSelf = self as? HandoffCapable else {
             noteImproperAPIUsage("Received willContinueUserActivityWithType but \(self) does not conform to HandoffCapable. Not handling handoff event.")
             return false
         }
         
-        return userActivityCapableSelf.willContinueUserActivityWithType(userActivityType)
+        return userActivityCapableSelf.willContinue(userActivityType: userActivityType)
     }
     
-    final public func application(application: UIApplication, didUpdateUserActivity userActivity: NSUserActivity) {
+    @objc(application:didUpdateUserActivity:)
+    final public func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
         guard let userActivityCapableSelf = self as? HandoffCapable else {
             noteImproperAPIUsage("Received didUpdateUserActivity but \(self) does not conform to HandoffCapable. Not handling handoff event.")
             return
         }
         
-        userActivityCapableSelf.didUpdateUserActivity(userActivity)
+        userActivityCapableSelf.didUpdate(userActivity: userActivity)
     }
     
-    final public func application(application: UIApplication, didFailToContinueUserActivityWithType userActivityType: String, error: NSError) {
+    final public func application(_ application: UIApplication, didFailToContinueUserActivityWithType userActivityType: String, error: Error) {
         guard let userActivityCapableSelf = self as? HandoffCapable else {
             noteImproperAPIUsage("Received didFailToContinueUserActivityWithType but \(self) does not conform to HandoffCapable. Not handling handoff event.")
             return
         }
         
-        userActivityCapableSelf.didFailToContinueUserActivityWithType(userActivityType, error: error)
+        userActivityCapableSelf.didFailToContinue(userActivityType: userActivityType, error: error)
     }
 }

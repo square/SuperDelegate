@@ -35,26 +35,26 @@ class SuperDelegateShortcutsTests: SuperDelegateTests {
         
         shortcutCapableDelegate.shouldHandleNextShortcut = false
         let launchOptions = [
-            UIApplicationLaunchOptionsShortcutItemKey : shortcutItem,
-        ]
+            UIApplicationLaunchOptionsKey.shortcutItem : shortcutItem,
+            ]
         
-        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch shortcutCapableDelegate.launchItem {
-        case .NoItem:
+        case .none:
             break
         default:
             XCTFail()
         }
     }
     
-    func test_performActionForShortcutItem_doesNotCallHandleShortcutItemToOpenIfCanHandleShortcutItemFails() {
+    func test_performActionFor_doesNotCallHandleShortcutItemToOpenIfCanHandleShortcutItemFails() {
         let shortcutCapableDelegate = ShortcutsCapableDelegate()
         let shortcutItem = UIApplicationShortcutItem(type: "a shortcut type", localizedTitle: "the best shortcut title")
         
         shortcutCapableDelegate.shouldHandleNextShortcut = false
-        shortcutCapableDelegate.application(UIApplication.sharedApplication(), performActionForShortcutItem: shortcutItem) { (handledShortcutItem) in
+        shortcutCapableDelegate.application(UIApplication.shared, performActionFor: shortcutItem) { (handledShortcutItem) in
             XCTAssertFalse(handledShortcutItem)
         }
         
@@ -66,26 +66,26 @@ class SuperDelegateShortcutsTests: SuperDelegateTests {
         let shortcutItem = UIApplicationShortcutItem(type: "a shortcut type", localizedTitle: "the best shortcut title")
         
         let launchOptions = [
-            UIApplicationLaunchOptionsShortcutItemKey : shortcutItem,
+            UIApplicationLaunchOptionsKey.shortcutItem : shortcutItem,
             ]
         
-        XCTAssertFalse(shortcutCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertFalse(shortcutCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(shortcutCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch shortcutCapableDelegate.launchItem {
-        case let .ShortcutItem(launchShortcutItem):
+        case let .shortcut(launchShortcutItem):
             XCTAssertEqual(shortcutItem, launchShortcutItem)
         default:
             XCTFail()
         }
     }
     
-    func test_performActionForShortcutItem_callsHandleShortcutItemToOpenIfCanHandleShortcutItemSucceeds() {
+    func test_performActionFor_callsHandleShortcutItemToOpenIfCanHandleShortcutItemSucceeds() {
         let shortcutCapableDelegate = ShortcutsCapableDelegate()
         let shortcutItem = UIApplicationShortcutItem(type: "a shortcut type", localizedTitle: "the best shortcut title")
         
-        shortcutCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
-        shortcutCapableDelegate.application(UIApplication.sharedApplication(), performActionForShortcutItem: shortcutItem) { (handledShortcutItem) in
+        shortcutCapableDelegate.loadInterfaceOnce(with: .none)
+        shortcutCapableDelegate.application(UIApplication.shared, performActionFor: shortcutItem) { (handledShortcutItem) in
             XCTAssertTrue(handledShortcutItem)
         }
         
@@ -101,12 +101,12 @@ class SuperDelegateShortcutsTests: SuperDelegateTests {
 class ShortcutsCapableDelegate: AppLaunchedDelegate, ShortcutCapable {
     
     var shouldHandleNextShortcut = true
-    func canHandleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+    func canHandle(shortcutItem: UIApplicationShortcutItem) -> Bool {
         return shouldHandleNextShortcut
     }
     
     var handledShortcut: UIApplicationShortcutItem?
-    func handleShortcutItem(shortcutItem: UIApplicationShortcutItem, completionHandler: () -> Void) {
+    func handle(shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping () -> Swift.Void) {
         handledShortcut = shortcutItem
         completionHandler()
     }

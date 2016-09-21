@@ -30,75 +30,75 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
     
     func test_applicationDidFinishLaunching_doesNotLoadInterfaceWithURLIfCanOpenLaunchURLFails() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         openURLCapableDelegate.shouldOpenNextURL = false
-        let launchOptions: [String : AnyObject]
+        let launchOptions: [UIApplicationLaunchOptionsKey : Any]
         if #available(iOS 9.0, *) {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation,
-                UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation,
+                UIApplicationLaunchOptionsKey.openInPlace : copyBeforeUse
             ]
         } else {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation
             ]
         }
         
-        XCTAssertFalse(openURLCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertFalse(openURLCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertFalse(openURLCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertFalse(openURLCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch openURLCapableDelegate.launchItem {
-        case .NoItem:
+        case .none:
             break
         default:
             XCTFail()
         }
     }
-        
+    
     func test_applicationDidFinishLaunching_passesThroughOptions() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         if #available(iOS 9.0, *) {
             XCTAssertTrue(
-                openURLCapableDelegate.application(UIApplication.sharedApplication(),
-                    didFinishLaunchingWithOptions: [
-                        UIApplicationLaunchOptionsURLKey : url,
-                        UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                        UIApplicationLaunchOptionsAnnotationKey : annotation,
-                        UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                openURLCapableDelegate.application(UIApplication.shared,
+                                                   didFinishLaunchingWithOptions: [
+                                                    UIApplicationLaunchOptionsKey.url : url,
+                                                    UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                                                    UIApplicationLaunchOptionsKey.annotation : annotation,
+                                                    UIApplicationLaunchOptionsKey.openInPlace : copyBeforeUse
                     ]
                 )
             )
         } else {
             XCTAssertTrue(
-                openURLCapableDelegate.application(UIApplication.sharedApplication(),
-                    didFinishLaunchingWithOptions: [
-                        UIApplicationLaunchOptionsURLKey : url,
-                        UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                        UIApplicationLaunchOptionsAnnotationKey : annotation
+                openURLCapableDelegate.application(UIApplication.shared,
+                                                   didFinishLaunchingWithOptions: [
+                                                    UIApplicationLaunchOptionsKey.url : url,
+                                                    UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                                                    UIApplicationLaunchOptionsKey.annotation : annotation
                     ]
                 )
             )
         }
         
         switch openURLCapableDelegate.launchItem {
-        case let .OpenURLItem(urlToOpen):
-            XCTAssertEqual(urlToOpen.url, url)
-            XCTAssertEqual(urlToOpen.sourceApplicationBundleID, sourceBundleID)
-            XCTAssertEqual(urlToOpen.annotation as? Int, annotation)
-            XCTAssertEqual(urlToOpen.copyBeforeUse, copyBeforeUse)
+        case let .openURL(item):
+            XCTAssertEqual(item.url, url)
+            XCTAssertEqual(item.sourceApplicationBundleID, sourceBundleID)
+            XCTAssertEqual(item.annotation as? Int, annotation)
+            XCTAssertEqual(item.copyBeforeUse, copyBeforeUse)
         default:
             XCTFail()
         }
@@ -106,26 +106,27 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
     
     func test_openURL_options_passesThroughOptions() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        openURLCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        openURLCapableDelegate.loadInterfaceOnce(with: .none)
         
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         if #available(iOS 9.0, *) {
             XCTAssertTrue(
-                openURLCapableDelegate.application(UIApplication.sharedApplication(),
-                    openURL: url,
-                    options: [
-                        UIApplicationOpenURLOptionsSourceApplicationKey : sourceBundleID,
-                        UIApplicationOpenURLOptionsAnnotationKey : annotation,
-                        UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                openURLCapableDelegate.application(UIApplication.shared,
+                                                   open: url,
+                                                   options: [
+                                                    UIApplicationOpenURLOptionsKey.sourceApplication : sourceBundleID,
+                                                    UIApplicationOpenURLOptionsKey.annotation : annotation,
+                                                    UIApplicationOpenURLOptionsKey.openInPlace : copyBeforeUse
                     ]
                 )
             )
+            
         } else {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, sourceApplication: sourceBundleID, annotation: annotation))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, sourceApplication: sourceBundleID, annotation: annotation))
         }
         
         XCTAssertEqual(openURLCapableDelegate.handledURLToOpen?.url, url)
@@ -136,13 +137,13 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
     
     func test_openURL_sourceApplication_annotation_passesThroughOptions() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        openURLCapableDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        openURLCapableDelegate.loadInterfaceOnce(with: .none)
         
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, sourceApplication: sourceBundleID, annotation: annotation))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, sourceApplication: sourceBundleID, annotation: annotation))
         
         XCTAssertEqual(openURLCapableDelegate.handledURLToOpen?.url, url)
         XCTAssertEqual(openURLCapableDelegate.handledURLToOpen?.sourceApplicationBundleID, sourceBundleID)
@@ -150,35 +151,35 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
         XCTAssertFalse(openURLCapableDelegate.handledURLToOpen?.copyBeforeUse ?? true)
     }
     
-     func test_openURL_dropsURLDeliveredToLoadInterfaceWithLaunchItem() {
+    func test_openURL_dropsURLDeliveredToLoadInterfaceWithLaunchItem() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         openURLCapableDelegate.shouldOpenNextURL = true
-        let launchOptions: [String : AnyObject]
+        let launchOptions: [UIApplicationLaunchOptionsKey : Any]
         if #available(iOS 9.0, *) {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation,
-                UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation,
+                UIApplicationLaunchOptionsKey.openInPlace : copyBeforeUse
             ]
         } else {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation
             ]
         }
         
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch openURLCapableDelegate.launchItem {
-        case .OpenURLItem:
+        case .openURL:
             break
         default:
             XCTFail()
@@ -188,43 +189,43 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
         openURLCapableDelegate.handledURLToOpen = nil
         
         if #available(iOS 9.0, *) {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, options: [:]))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, options: [:]))
         } else {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, sourceApplication: sourceBundleID, annotation: annotation))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, sourceApplication: sourceBundleID, annotation: annotation))
         }
         
         XCTAssertNil(openURLCapableDelegate.handledURLToOpen)
-     }
+    }
     
     func test_openURL_doesNotDropURLDeliveredToLoadInterfaceWithLaunchItemAfterApplicationWillEnterForeground() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         openURLCapableDelegate.shouldOpenNextURL = true
-        let launchOptions: [String : AnyObject]
+        let launchOptions: [UIApplicationLaunchOptionsKey : Any]
         if #available(iOS 9.0, *) {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation,
-                UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation,
+                UIApplicationLaunchOptionsKey.openInPlace : copyBeforeUse
             ]
         } else {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation
             ]
         }
         
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch openURLCapableDelegate.launchItem {
-        case .OpenURLItem:
+        case .openURL:
             break
         default:
             XCTFail()
@@ -233,12 +234,12 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
         XCTAssertNotNil(openURLCapableDelegate.handledURLToOpen)
         openURLCapableDelegate.handledURLToOpen = nil
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         
         if #available(iOS 9.0, *) {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, options: [:]))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, options: [:]))
         } else {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: url, sourceApplication: sourceBundleID, annotation: annotation))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: url, sourceApplication: sourceBundleID, annotation: annotation))
         }
         
         XCTAssertEqual(openURLCapableDelegate.handledURLToOpen?.url, url)
@@ -246,33 +247,33 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
     
     func test_openURL_doesNotDropURLDifferentThanURLDeliveredToLoadInterfaceWithLaunchItem() {
         let openURLCapableDelegate = OpenURLCapableDelegate()
-        let url = NSURL(string: "cash.me/$dan")!
+        let url = URL(string: "cash.me/$dan")!
         let sourceBundleID = "com.squareup.cash"
         let annotation = 1
         let copyBeforeUse = true
         
         openURLCapableDelegate.shouldOpenNextURL = true
-        let launchOptions: [String : AnyObject]
+        let launchOptions: [UIApplicationLaunchOptionsKey : Any]
         if #available(iOS 9.0, *) {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation,
-                UIApplicationOpenURLOptionsOpenInPlaceKey : copyBeforeUse
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation,
+                UIApplicationLaunchOptionsKey.openInPlace : copyBeforeUse
             ]
         } else {
             launchOptions = [
-                UIApplicationLaunchOptionsURLKey : url,
-                UIApplicationLaunchOptionsSourceApplicationKey : sourceBundleID,
-                UIApplicationLaunchOptionsAnnotationKey : annotation
+                UIApplicationLaunchOptionsKey.url : url,
+                UIApplicationLaunchOptionsKey.sourceApplication : sourceBundleID,
+                UIApplicationLaunchOptionsKey.annotation : annotation
             ]
         }
         
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: launchOptions))
-        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: launchOptions))
+        XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: launchOptions))
         
         switch openURLCapableDelegate.launchItem {
-        case .OpenURLItem:
+        case .openURL:
             break
         default:
             XCTFail()
@@ -281,11 +282,11 @@ class SuperDelegateOpenURLTests: SuperDelegateTests {
         XCTAssertNotNil(openURLCapableDelegate.handledURLToOpen)
         openURLCapableDelegate.handledURLToOpen = nil
         
-        let otherUrl = NSURL(string: "cash.me/$martin")!
+        let otherUrl = URL(string: "cash.me/$martin")!
         if #available(iOS 9.0, *) {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: otherUrl, options: [:]))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: otherUrl, options: [:]))
         } else {
-            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.sharedApplication(), openURL: otherUrl, sourceApplication: sourceBundleID, annotation: annotation))
+            XCTAssertTrue(openURLCapableDelegate.application(UIApplication.shared, open: otherUrl, sourceApplication: sourceBundleID, annotation: annotation))
         }
         
         XCTAssertEqual(openURLCapableDelegate.handledURLToOpen?.url, otherUrl)
@@ -300,13 +301,13 @@ class OpenURLCapableDelegate: AppLaunchedDelegate, OpenURLCapable {
     var shouldOpenNextURL = true
     var handledURLToOpen: URLToOpen?
     
-    func handleURLToOpen(urlToOpen: URLToOpen) -> Bool {
+    func handle(urlToOpen: URLToOpen) -> Bool {
         handledURLToOpen = urlToOpen
         return shouldOpenNextURL
     }
     
-    func canOpenLaunchURL(launchURLToOpen: URLToOpen) -> Bool {
-        handledURLToOpen = launchURLToOpen
+    func canOpen(launchURL: URLToOpen) -> Bool {
+        handledURLToOpen = launchURL
         return shouldOpenNextURL
     }
 }

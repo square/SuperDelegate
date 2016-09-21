@@ -27,13 +27,11 @@ import Foundation
 public protocol UserActivityCapable: ApplicationLaunched {
     /// Called whenever your application must handle a user activity.
     /// @return Whether you can handle the user activity. Returning false means the below methods will not be called.
-    @warn_unused_result
-    func canHandleUserActivity(userActivity: NSUserActivity) -> Bool
+    func canResume(userActivity: NSUserActivity) -> Bool
     
     /// Called whenever your application must continue a user activity after the interface has been loaded.
     /// @return true if your app handled the user activity, false if it did not.
-    @warn_unused_result
-    func continueUserActivity(userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool
+    func resume(userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Swift.Void) -> Bool
 }
 
 
@@ -46,8 +44,8 @@ extension SuperDelegate {
     // MARK: UIApplicationDelegate
     
     
-    @warn_unused_result
-    final public func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+    @objc(application:continueUserActivity:restorationHandler:)
+    final public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Swift.Void) -> Bool {
         guard let userActivityCapableSelf = self as? UserActivityCapable else {
             noteImproperAPIUsage("Received continueUserActivity but \(self) does not conform to UserActivityCapable. Not handling user activity event.")
             return false
@@ -58,17 +56,21 @@ extension SuperDelegate {
             return true
         }
         
-        guard userActivityCapableSelf.canHandleUserActivity(userActivity) else {
+        guard userActivityCapableSelf.canResume(userActivity: userActivity) else {
             return false
         }
         
-        return userActivityCapableSelf.continueUserActivity(userActivity, restorationHandler: restorationHandler)
+        return userActivityCapableSelf.resume(userActivity: userActivity, restorationHandler: restorationHandler)
     }
     
 }
 
 
-// MARK: Undocumented Launch Options Keys
+// MARK: – UIApplicationLaunchOptionsKey Extension
 
 
-let ApplicationLaunchOptionsUserActivityKey = "UIApplicationLaunchOptionsUserActivityKey"
+extension UIApplicationLaunchOptionsKey {
+    
+    // UIApplicationLaunchOptionsKey.userActivity is passed into launchOptions, but the API doesn't acknowledge this. So we add it here manually.
+    public static let userActivity = UIApplicationLaunchOptionsKey(rawValue: "UIApplicationLaunchOptionsUserActivityKey")
+}

@@ -30,7 +30,7 @@ class SuperDelegateWatchKitTests: SuperDelegateTests {
     
     func test_handleWatchkitExtensionRequest_setsUpApplicationPriorToHandlingTheExtension() {
         let watchKitCapableDelegate = WatchKitCapableDelegate()
-        watchKitCapableDelegate.application(UIApplication.sharedApplication(), handleWatchKitExtensionRequest: nil) { (_) in
+        watchKitCapableDelegate.application(UIApplication.shared, handleWatchKitExtensionRequest: nil) { (_) in
             // Nothing to do here.
         }
         XCTAssertTrue(watchKitCapableDelegate.hasHandledWatchKitExtensionRequest)
@@ -44,7 +44,7 @@ class SuperDelegateWatchKitTests: SuperDelegateTests {
 class WatchKitCapableDelegate: AppLaunchedDelegate, WatchKitCapable {
     
     var hasHandledWatchKitExtensionRequest = false
-    func handleWatchKitExtensionRequest(userInfo: [NSObject : AnyObject]?, reply: ([NSObject : AnyObject]?) -> Void) {
+    func handleWatchKitExtensionRequest(userInfo: [AnyHashable : Any]?, reply: @escaping ([AnyHashable : Any]?) -> Swift.Void) {
         hasHandledWatchKitExtensionRequest = true
         XCTAssertTrue(hasSetupApplication)
     }

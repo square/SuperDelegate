@@ -26,22 +26,19 @@ import Foundation
 
 public protocol StateRestorationCapable: ApplicationLaunched {
     /// Called when your app can save its application state for restoration. Returns whether the app should save the current state.
-    @warn_unused_result
-    func shouldSaveApplicationState(coder: NSCoder) -> Bool
+    func shouldSaveApplicationState(using coder: NSCoder) -> Bool
     
     /// Called when your app can restore its application state after its interface has been loaded. Returns whether the app should restore.
-    @warn_unused_result
-    func shouldRestoreApplicationState(coder: NSCoder) -> Bool
+    func shouldRestoreApplicationState(using coder: NSCoder) -> Bool
     
     /// Tells your delegate to save any high-level state information at the beginning of the state preservation process.
-    func willEncodeRestorableStateWithCoder(coder: NSCoder)
+    func willEncodeRestorableState(using coder: NSCoder)
     
     /// Tells your delegate to restore any high-level state information as part of the state restoration process.
-    func didDecodeRestorableStateWithCoder(coder: NSCoder)
+    func didDecodeRestorableState(using coder: NSCoder)
     
     /// Asks your app to provide the specified view controller during state restoration.
-    @warn_unused_result
-    func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController?
+    func viewControllerWithRestorationIdentifierPath(identifierComponents: [Any], coder: NSCoder) -> UIViewController?
 }
 
 
@@ -54,52 +51,51 @@ extension SuperDelegate {
     // MARK: UIApplicationDelegate
     
     
-    @warn_unused_result
-    final public func application(application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+    final public func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         guard let stateRestorationCapableSelf = self as? StateRestorationCapable else {
             // Nothing to do here.
             return false
         }
         
-        return stateRestorationCapableSelf.shouldSaveApplicationState(coder)
+        return stateRestorationCapableSelf.shouldSaveApplicationState(using: coder)
     }
     
-    @warn_unused_result
-    final public func application(application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+    final public func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         guard let stateRestorationCapableSelf = self as? StateRestorationCapable else {
             // Nothing to do here.
             return false
         }
         
-        return stateRestorationCapableSelf.shouldRestoreApplicationState(coder)
+        return stateRestorationCapableSelf.shouldRestoreApplicationState(using: coder)
     }
     
-    final public func application(application: UIApplication, willEncodeRestorableStateWithCoder coder: NSCoder) {
+    @objc(application:willEncodeRestorableStateWithCoder:)
+    final public func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
         guard let stateRestorationCapableSelf = self as? StateRestorationCapable else {
             // Nothing to do here.
             return
         }
         
-        stateRestorationCapableSelf.willEncodeRestorableStateWithCoder(coder)
+        stateRestorationCapableSelf.willEncodeRestorableState(using: coder)
     }
     
-    final public func application(application: UIApplication, didDecodeRestorableStateWithCoder coder: NSCoder) {
+    @objc(application:didDecodeRestorableStateWithCoder:)
+    final public func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
         guard let stateRestorationCapableSelf = self as? StateRestorationCapable else {
             // Nothing to do here.
             return
         }
         
-        stateRestorationCapableSelf.didDecodeRestorableStateWithCoder(coder)
+        stateRestorationCapableSelf.didDecodeRestorableState(using: coder)
         
     }
     
-    @warn_unused_result
-    final public func application(application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+    final public func application(_ application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         guard let stateRestorationCapableSelf = self as? StateRestorationCapable else {
             noteImproperAPIUsage("Received viewControllerWithRestorationIdentifierPath but \(self) does not conform to StateRestorationCapable. Not handling state restoration event.")
             return nil
         }
         
-        return stateRestorationCapableSelf.viewControllerWithRestorationIdentifierPath(identifierComponents, coder: coder)
+        return stateRestorationCapableSelf.viewControllerWithRestorationIdentifierPath(identifierComponents: identifierComponents, coder: coder)
     }
 }

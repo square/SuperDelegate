@@ -33,14 +33,14 @@ class SuperDelegateTests: XCTestCase {
     func test_willFinishLaunchingWithOptions_notesImproperAPIUsage() {
         let nonConformingTestDelegate = NonConformingTestDelegate()
         nonConformingTestDelegate.expectImproperAPIUsage = true
-        XCTAssertFalse(nonConformingTestDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
+        XCTAssertFalse(nonConformingTestDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
         XCTAssertFalse(nonConformingTestDelegate.expectImproperAPIUsage)
     }
     
     func test_didFinishLaunchingWithOptions_notesImproperAPIUsage() {
         let nonConformingTestDelegate = NonConformingTestDelegate()
         nonConformingTestDelegate.expectImproperAPIUsage = true
-        XCTAssertFalse(nonConformingTestDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil))
+        XCTAssertFalse(nonConformingTestDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
         XCTAssertFalse(nonConformingTestDelegate.expectImproperAPIUsage)
     }
     
@@ -55,7 +55,7 @@ class SuperDelegateTests: XCTestCase {
     func test_loadInterfaceOnce_notesImproperAPIUsageAndGuardsAgainstLoadingInterface() {
         let nonConformingTestDelegate = NonConformingTestDelegate()
         nonConformingTestDelegate.expectImproperAPIUsage = true
-        nonConformingTestDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        nonConformingTestDelegate.loadInterfaceOnce(with: .none)
         XCTAssertFalse(nonConformingTestDelegate.expectImproperAPIUsage)
         XCTAssertFalse(nonConformingTestDelegate.interfaceLoaded)
     }
@@ -75,18 +75,18 @@ class SuperDelegateTests: XCTestCase {
     func test_loadInterfaceOnce_loadsInterfaceOnce() {
         let appLaunchedDelegate = AppLaunchedDelegate()
         XCTAssertFalse(appLaunchedDelegate.interfaceLoaded)
-        appLaunchedDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        appLaunchedDelegate.loadInterfaceOnce(with: .none)
         XCTAssertTrue(appLaunchedDelegate.interfaceLoaded)
-        appLaunchedDelegate.loadInterfaceOnceWithLaunchItem(.NoItem)
+        appLaunchedDelegate.loadInterfaceOnce(with: .none)
     }
     
     func test_applicationWillFinishLaunching_notesImproperAPIUsageAndReturnsFalseWhenUnsupportedLaunchOptionUserActivityPresent() {
         let appLaunchedDelegate = AppLaunchedDelegate()
         appLaunchedDelegate.expectImproperAPIUsage = true
         // Must return false to signal that the URL user activity could not be handled.
-        XCTAssertFalse(appLaunchedDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsUserActivityDictionaryKey : [ApplicationLaunchOptionsUserActivityKey : NSUserActivity(activityType: "a type")]]))
+        XCTAssertFalse(appLaunchedDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.userActivityDictionary : [UIApplicationLaunchOptionsKey.userActivity : NSUserActivity(activityType: "a type")]]))
         XCTAssertFalse(appLaunchedDelegate.expectImproperAPIUsage)
-        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.NoItem)
+        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.none)
     }
     
     @available(iOS 9.0, *)
@@ -94,25 +94,25 @@ class SuperDelegateTests: XCTestCase {
         let appLaunchedDelegate = AppLaunchedDelegate()
         appLaunchedDelegate.expectImproperAPIUsage = true
         // Must return true to signal that the shortcut wasn't handled.
-        XCTAssertTrue(appLaunchedDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsShortcutItemKey : UIApplicationShortcutItem(type: "A type", localizedTitle: "A title")]))
+        XCTAssertTrue(appLaunchedDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.shortcutItem : UIApplicationShortcutItem(type: "A type", localizedTitle: "A title")]))
         XCTAssertFalse(appLaunchedDelegate.expectImproperAPIUsage)
-        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.NoItem)
+        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.none)
     }
-
+    
     func test_applicationWillFinishLaunching_notesImproperAPIUsageAndReturnsFalseWhenUnsupportedLaunchOptionURLPresent() {
         let appLaunchedDelegate = AppLaunchedDelegate()
         appLaunchedDelegate.expectImproperAPIUsage = true
         // Must return false to signal that the URL can not be handled.
-        XCTAssertFalse(appLaunchedDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsURLKey : NSURL(fileURLWithPath: "/")]))
+        XCTAssertFalse(appLaunchedDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: [UIApplicationLaunchOptionsKey.url : URL(fileURLWithPath: "/")]))
         XCTAssertFalse(appLaunchedDelegate.expectImproperAPIUsage)
-        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.NoItem)
+        XCTAssertEqual(appLaunchedDelegate.launchItem, LaunchItem.none)
     }
     
     func test_setupMainWindow_notesImproperAPIUsageWhenCalledOutsideOfLoadInterfaceWithLaunchItem() {
         let appLaunchedDelegate = AppLaunchedDelegate()
         appLaunchedDelegate.expectImproperAPIUsage = true
         
-        appLaunchedDelegate.setupMainWindow(UIWindow())
+        appLaunchedDelegate.setup(mainWindow: UIWindow())
         XCTAssertFalse(appLaunchedDelegate.expectImproperAPIUsage)
     }
 }
@@ -130,7 +130,7 @@ class NonConformingTestDelegate: SuperDelegate {
     
     var expectImproperAPIUsage = false
     
-    override func noteImproperAPIUsage(text: String) {
+    override func noteImproperAPIUsage(_ text: String) {
         XCTAssertTrue(expectImproperAPIUsage)
         
         expectImproperAPIUsage = false
@@ -150,8 +150,8 @@ class AppLaunchedDelegate: NonConformingTestDelegate, ApplicationLaunched {
     }
     
     var hasLoadedApplication = false
-    var launchItem = LaunchItem.NoItem
-    func loadInterfaceWithLaunchItem(launchItem: LaunchItem) {
+    var launchItem = LaunchItem.none
+    func loadInterface(launchItem: LaunchItem) {
         XCTAssertFalse(hasLoadedApplication)
         hasLoadedApplication = true
         

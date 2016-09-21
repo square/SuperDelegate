@@ -26,7 +26,7 @@ import Foundation
 
 public protocol BackgroundBluetoothPeripheralCapable: ApplicationLaunched {
     /// Called when the application is launched due to background bluetooth peripheral activity.
-    func restoreBluetoothPeripheralManagersWithIdentifiers(peripheralManagerIdentifiersToRestore: [String])
+    func restoreBluetoothPeripheralManagers(withIdentifiers identifiers: [String])
 }
 
 
@@ -35,5 +35,5 @@ public protocol BackgroundBluetoothPeripheralCapable: ApplicationLaunched {
 
 public protocol BackgroundBluetoothCentralCapable: ApplicationLaunched {
     /// Called when the application is launched due to background bluetooth central activity.
-    func restoreBluetoothCentralManagersWithIdentifiers(centralManagerIdentifiersToRestore: [String])
+    func restoreBluetoothCentralManagers(withIdentifiers identifiers: [String])
 }

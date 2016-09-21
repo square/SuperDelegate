@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EAB6215D1D877D930087F1D3 /* SuperDelegate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; };
-		EAB6215E1D877D930087F1D3 /* SuperDelegate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EAEA845E1D8A1C0200F63F90 /* SuperDelegate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; };
+		EAEA845F1D8A1C0200F63F90 /* SuperDelegate.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAECD1BB1D0CAC07008BB9F5 /* SuperDelegate.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EAECD1A41D0CABFD008BB9F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAECD1A31D0CABFD008BB9F5 /* AppDelegate.swift */; };
 		EAECD1A61D0CABFD008BB9F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAECD1A51D0CABFD008BB9F5 /* ViewController.swift */; };
 		EAECD1AB1D0CABFD008BB9F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAECD1AA1D0CABFD008BB9F5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		EAB6215F1D877D930087F1D3 /* PBXContainerItemProxy */ = {
+		EAEA84601D8A1C0200F63F90 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EAECD1B51D0CAC07008BB9F5 /* SuperDelegate.xcodeproj */;
 			proxyType = 1;
@@ -39,13 +39,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		EAB621611D877D930087F1D3 /* Embed Frameworks */ = {
+		EAEA84621D8A1C0200F63F90 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EAB6215E1D877D930087F1D3 /* SuperDelegate.framework in Embed Frameworks */,
+				EAEA845F1D8A1C0200F63F90 /* SuperDelegate.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAB6215D1D877D930087F1D3 /* SuperDelegate.framework in Frameworks */,
+				EAEA845E1D8A1C0200F63F90 /* SuperDelegate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,12 +120,12 @@
 				EAECD19C1D0CABFD008BB9F5 /* Sources */,
 				EAECD19D1D0CABFD008BB9F5 /* Frameworks */,
 				EAECD19E1D0CABFD008BB9F5 /* Resources */,
-				EAB621611D877D930087F1D3 /* Embed Frameworks */,
+				EAEA84621D8A1C0200F63F90 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				EAB621601D877D930087F1D3 /* PBXTargetDependency */,
+				EAEA84611D8A1C0200F63F90 /* PBXTargetDependency */,
 			);
 			name = SampleDelegate;
 			productName = SampleDelegate;
@@ -139,11 +139,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Square, Inc.";
 				TargetAttributes = {
 					EAECD19F1D0CABFD008BB9F5 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -212,10 +213,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		EAB621601D877D930087F1D3 /* PBXTargetDependency */ = {
+		EAEA84611D8A1C0200F63F90 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SuperDelegate;
-			targetProxy = EAB6215F1D877D930087F1D3 /* PBXContainerItemProxy */;
+			targetProxy = EAEA84601D8A1C0200F63F90 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -234,8 +235,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -262,6 +265,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -279,8 +283,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -299,6 +305,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -306,24 +313,27 @@
 		EAECD1B31D0CABFD008BB9F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SampleDelegate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SampleDelegate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		EAECD1B41D0CABFD008BB9F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = SampleDelegate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.squareup.SampleDelegate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

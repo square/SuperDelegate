@@ -30,11 +30,11 @@ class SuperDelegateUserNotificationTests: SuperDelegateTests {
     
     func test_requestUserNotificationPermissions_isNotCalledOnWillEnterForegroundIfNotPreviouslyCalled() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 1)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         // One call for testing if we've previously registered.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 2)
         
@@ -43,8 +43,8 @@ class SuperDelegateUserNotificationTests: SuperDelegateTests {
     
     func test_requestUserNotificationPermissions_isCalledOnWillEnterForegroundIfPreviouslyCalled() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
         // One call on willFinishLaunching is expected.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 1)
         
@@ -52,7 +52,7 @@ class SuperDelegateUserNotificationTests: SuperDelegateTests {
         // One call for registering, one call for noting that we registered.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 3)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         // One call for testing if we've previously registered, one call for registering, one call for setting that we have registered.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 6)
         
@@ -61,26 +61,26 @@ class SuperDelegateUserNotificationTests: SuperDelegateTests {
     
     func test_requestUserNotificationPermissions_isNotCalledOnWillEnterForegroundIfPreviouslyCalledWithDifferentNotificationTypes() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
-        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegate.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 1)
         
         userNotificationsCapableDelegate.requestUserNotificationPermissions()
         // One call for registering, one call for noting that we registered.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 3)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         // One call for testing if we've previously registered, one call for registering, one call for setting that we have registered.
         XCTAssertEqual(userNotificationsCapableDelegate.requestedUserNotificationSettingsCallCount, 6)
         
         // A new instance should be able to read from the same pref and register (or not) accordingly.
         let userNotificationsCapableDelegateWithDifferentUserNotificationPreferences = UserNotificationsCapableDelegate()
-        userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.userNotificationSettingsToPrefer = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert, categories: nil)
+        userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.userNotificationSettingsToPrefer = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
         
-        XCTAssertTrue(userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.application(UIApplication.sharedApplication(), willFinishLaunchingWithOptions: nil))
+        XCTAssertTrue(userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
         XCTAssertEqual(userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.requestedUserNotificationSettingsCallCount, 1)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationWillEnterForegroundNotification, object: UIApplication.sharedApplication())
+        NotificationCenter.default.post(name: NSNotification.Name.UIApplicationWillEnterForeground, object: UIApplication.shared)
         // One call for testing if we've previously registered, but none for registering.
         XCTAssertEqual(userNotificationsCapableDelegateWithDifferentUserNotificationPreferences.requestedUserNotificationSettingsCallCount, 1)
         
@@ -90,35 +90,36 @@ class SuperDelegateUserNotificationTests: SuperDelegateTests {
     
     func test_didReceiveUserNotificationPermissions_saysRequestedPermissionsGrantedWhenNoneAreRequsted() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didRegisterUserNotificationSettings: UIUserNotificationSettings())
+        userNotificationsCapableDelegate.application(UIApplication.shared, didRegister: UIUserNotificationSettings())
         
-        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.Requested)
+        
+        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.requested)
     }
     
     func test_didReceiveUserNotificationPermissions_saysNonePermissionsGrantedWhenAllAreRequstedAndNoneGranted() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(forTypes: UIUserNotificationType(rawValue: (UIUserNotificationType.Alert.rawValue | UIUserNotificationType.Sound.rawValue | UIUserNotificationType.Badge.rawValue)), categories: nil)
-        userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didRegisterUserNotificationSettings: UIUserNotificationSettings())
+        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(types: UIUserNotificationType(rawValue: (UIUserNotificationType.alert.rawValue | UIUserNotificationType.sound.rawValue | UIUserNotificationType.badge.rawValue)), categories: nil)
+        userNotificationsCapableDelegate.application(UIApplication.shared, didRegister: UIUserNotificationSettings())
         
-        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.None)
+        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.none)
     }
     
     func test_didReceiveUserNotificationPermissions_saysRequestedPermissionsGrantedWhenAllAreRequstedAndGranted() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        let preferredUserNotificationTypes = UIUserNotificationType(rawValue: (UIUserNotificationType.Alert.rawValue | UIUserNotificationType.Sound.rawValue | UIUserNotificationType.Badge.rawValue))
-        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(forTypes: preferredUserNotificationTypes, categories: nil)
-        userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didRegisterUserNotificationSettings: UIUserNotificationSettings(forTypes: preferredUserNotificationTypes, categories: nil))
+        let preferredUserNotificationTypes = UIUserNotificationType(rawValue: (UIUserNotificationType.alert.rawValue | UIUserNotificationType.sound.rawValue | UIUserNotificationType.badge.rawValue))
+        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(types: preferredUserNotificationTypes, categories: nil)
+        userNotificationsCapableDelegate.application(UIApplication.shared, didRegister: UIUserNotificationSettings(types: preferredUserNotificationTypes, categories: nil))
         
-        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.Requested)
+        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.requested)
     }
     
     func test_didReceiveUserNotificationPermissions_saysSomePermissionsGrantedWhenAllAreRequstedAndGranted() {
         let userNotificationsCapableDelegate = UserNotificationsCapableDelegate()
-        let preferredUserNotificationTypes = UIUserNotificationType(rawValue: (UIUserNotificationType.Alert.rawValue | UIUserNotificationType.Sound.rawValue | UIUserNotificationType.Badge.rawValue))
-        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(forTypes: preferredUserNotificationTypes, categories: nil)
-        userNotificationsCapableDelegate.application(UIApplication.sharedApplication(), didRegisterUserNotificationSettings: UIUserNotificationSettings(forTypes: UIUserNotificationType.Badge, categories: nil))
+        let preferredUserNotificationTypes = UIUserNotificationType(rawValue: (UIUserNotificationType.alert.rawValue | UIUserNotificationType.sound.rawValue | UIUserNotificationType.badge.rawValue))
+        userNotificationsCapableDelegate.userNotificationSettingsToPrefer = UIUserNotificationSettings(types: preferredUserNotificationTypes, categories: nil)
+        userNotificationsCapableDelegate.application(UIApplication.shared, didRegister: UIUserNotificationSettings(types: UIUserNotificationType.badge, categories: nil))
         
-        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.Some(grantedPermissions: UIUserNotificationType.Badge))
+        XCTAssertEqual(userNotificationsCapableDelegate.grantedUserNotificationPermissions, UserNotificationPermissionsGranted.partial(grantedPermissions: UIUserNotificationType.badge))
     }
 }
 
@@ -135,8 +136,8 @@ class UserNotificationsCapableDelegate: AppLaunchedDelegate, UserNotificationCap
         return userNotificationSettingsToPrefer
     }
     
-    var grantedUserNotificationPermissions = UserNotificationPermissionsGranted.None
-    func didReceiveUserNotificationPermissions(userNotificationPermissionsGranted: UserNotificationPermissionsGranted) {
-        grantedUserNotificationPermissions = userNotificationPermissionsGranted
+    var grantedUserNotificationPermissions = UserNotificationPermissionsGranted.none
+    func didReceive(userNotificationPermissions: UserNotificationPermissionsGranted) {
+        grantedUserNotificationPermissions = userNotificationPermissions
     }
 }
