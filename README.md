@@ -26,10 +26,10 @@ To install SuperDelegate in your iOS project running Xcode 7 with [CocoaPods](ht
 
 ```
 platform :ios, '8.0'
-pod 'SuperDelegate', '~> 0.8.0'
+pod 'SuperDelegate', '~> 0.9.0'
 ```
 
-Xcode 8 and Swift 3 projects should use 0.9.0
+Xcode 7 and Swift 2 projects should use 0.7.0
 
 ### Carthage
 
@@ -48,7 +48,7 @@ To install SuperDelegate in your iOS project with [Swift Package Manager](https:
 ```swift
   .Package(
     url: "https://github.com/square/SuperDelegate.git",
-    versions: Version(0,8,0)..<Version(0,9,0)
+    versions: Version(0,9,0)..<Version(1,0,0)
   ),
 ```
 
@@ -76,9 +76,9 @@ To opt into more AppDelegate features, have your `AppDelegate` class conform to 
 * iOS 8 or later.
 
 ## Versions
-* 0.8.* – Swift 2.3 and Xcode 7.3+. This version has been thouroughly vetted.
+* 0.8.* – Swift 2.3 and Xcode 7.3+.
 * 0.9.* – Swift 3.0 and Xcode 8+.
-* 1.0 – Swift 3.0, Xcode 8+, and iOS 10 SDK adoption.
+* 1.0 – Swift 3.0, Xcode 8+, and iOS 10 SDK adoption. Currently in development.
 
 ## Contributing
 
