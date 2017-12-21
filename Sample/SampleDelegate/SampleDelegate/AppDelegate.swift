@@ -25,7 +25,7 @@ import SuperDelegate
 @UIApplicationMain
 class AppDelegate: SuperDelegate, ApplicationLaunched {
     
-    let window = UIWindow()
+    var window: UIWindow? = UIWindow()
     
     // MARK: ApplicationLaunched
     
@@ -35,6 +35,9 @@ class AppDelegate: SuperDelegate, ApplicationLaunched {
     
     func loadInterface(launchItem: LaunchItem) {
         // Setup our main window since we don't have a storyboard.
+        guard let window = self.window else {
+            preconditionFailure("Window could not be unwrapped, this should never happen")
+        }
         setup(mainWindow: window)
         window.rootViewController = ViewController()
         
