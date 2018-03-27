@@ -28,6 +28,7 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
     @available(iOS 9.0, *)
     case shortcut(item: UIApplicationShortcutItem)
     case userActivity(item: NSUserActivity)
+    case sourceApplication(bundleIdentifier: String)
     case none
     
     // MARK: Equatable
@@ -44,8 +45,13 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             return true
         case let (.userActivity(itemLHS), .userActivity(itemRHS)) where itemLHS == itemRHS:
             return true
+        case let (.sourceApplication(itemLHS), .sourceApplication(itemRHS)) where itemLHS == itemRHS:
+            return true
         case (.none, .none):
             return true
+            
+        // Xcode 8.0 doesn't properly recognize pattern matching as exhaustive, so this requires a default case <https://github.com/square/SuperDelegate/pull/25#discussion_r177470662>.
+        // Once we update the minimum Xcode version to 9.0, this should be replaced with pattern matching.
         default:
             return false
         }
@@ -53,7 +59,7 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
     
     // MARK: Initialization
     
-    init(launchOptions: [AnyHashable : Any]?) {
+    init(launchOptions: [UIApplicationLaunchOptionsKey : Any]?) {
         if let launchRemoteNotification = RemoteNotification(remoteNotification: launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable : Any]) {
             self = .remoteNotification(item: launchRemoteNotification)
             
@@ -90,6 +96,9 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             let launchUserActivity = userActivityDictionary[UIApplicationLaunchOptionsKey.userActivity] as? NSUserActivity {
             self = .userActivity(item: launchUserActivity)
             
+        } else if let sourceApplication = launchOptions?[UIApplicationLaunchOptionsKey.sourceApplication] as? String {
+            self = .sourceApplication(bundleIdentifier: sourceApplication)
+            
         } else {
             self = .none
         }
@@ -110,6 +119,8 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             return "LaunchItem.shortcut: \(item)"
         case let .userActivity(item):
             return "LaunchItem.userActivity: \(item)"
+        case let .sourceApplication(item):
+            return "LaunchItem.sourceApplication: \(item)"
         case .none:
             return "LaunchItem.none"
         }
@@ -118,7 +129,7 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
     // MARK: Public Properties
     
     /// The launch options that were used to construct the enum, for passing into third party APIs.
-    public var launchOptions: [AnyHashable : Any] {
+    public var launchOptions: [UIApplicationLaunchOptionsKey : Any] {
         switch self {
         case let .remoteNotification(item):
             return [
@@ -131,7 +142,7 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             ]
             
         case let .openURL(item):
-            var launchOptions: [AnyHashable : Any] = [
+            var launchOptions: [UIApplicationLaunchOptionsKey : Any] = [
                 UIApplicationLaunchOptionsKey.url : item.url
             ]
             
@@ -165,6 +176,11 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
                     UIApplicationLaunchOptionsKey.userActivityType : item.activityType,
                     UIApplicationLaunchOptionsKey.userActivity : item
                 ]
+            ]
+            
+        case let .sourceApplication(item):
+            return [
+                UIApplicationLaunchOptionsKey.sourceApplication : item
             ]
             
         case .none:

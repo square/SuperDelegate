@@ -67,6 +67,9 @@ class AppDelegate: SuperDelegate, ApplicationLaunched {
                 // Nothing to do here.
             })
             
+        case .sourceApplication:
+            break // Nothing to do here.
+            
         case .none:
             // We were launched because the launched us from Springboard or the App Switcher.
             break
