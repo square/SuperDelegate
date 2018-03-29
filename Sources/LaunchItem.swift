@@ -29,6 +29,7 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
     case shortcut(item: UIApplicationShortcutItem)
     case userActivity(item: NSUserActivity)
     case sourceApplication(bundleIdentifier: String)
+    case unknown(launchOptions: [UIApplicationLaunchOptionsKey : Any])
     case none
     
     // MARK: Equatable
@@ -47,6 +48,9 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             return true
         case let (.sourceApplication(itemLHS), .sourceApplication(itemRHS)) where itemLHS == itemRHS:
             return true
+        case let (.unknown(itemLHS), .unknown(itemRHS)):
+            // Use NSDictionary's equality tests, since this is an NSDictionary in the Objective-C headers of UIApplicationDelegate.
+            return (itemLHS as NSDictionary) == (itemRHS as NSDictionary)
         case (.none, .none):
             return true
             
@@ -99,6 +103,9 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
         } else if let sourceApplication = launchOptions?[UIApplicationLaunchOptionsKey.sourceApplication] as? String {
             self = .sourceApplication(bundleIdentifier: sourceApplication)
             
+        } else if let launchOptions = launchOptions, !launchOptions.isEmpty {
+            self = .unknown(launchOptions: launchOptions)
+            
         } else {
             self = .none
         }
@@ -121,6 +128,8 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             return "LaunchItem.userActivity: \(item)"
         case let .sourceApplication(item):
             return "LaunchItem.sourceApplication: \(item)"
+        case let .unknown(launchOptions):
+            return "LaunchItem.unknown: \(launchOptions)"
         case .none:
             return "LaunchItem.none"
         }
@@ -182,6 +191,9 @@ public enum LaunchItem: CustomStringConvertible, Equatable {
             return [
                 UIApplicationLaunchOptionsKey.sourceApplication : item
             ]
+            
+        case let .unknown(launchOptions):
+            return launchOptions
             
         case .none:
             return [:]

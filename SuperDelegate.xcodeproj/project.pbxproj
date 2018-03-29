@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D7C141F206B029300986F1F /* SuperDelegate+LaunchItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7C141E206B029300986F1F /* SuperDelegate+LaunchItemTests.swift */; };
 		EA47167E1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA47167D1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift */; };
 		EA4716801CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA47167F1CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift */; };
 		EA4716821CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4716811CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D7C141E206B029300986F1F /* SuperDelegate+LaunchItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+LaunchItemTests.swift"; sourceTree = "<group>"; };
 		DCD068281CC6E32F00EC892D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EA47167D1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+ShortcutsTests.swift"; sourceTree = "<group>"; };
 		EA47167F1CC5D9C400DE3B99 /* SuperDelegate+StateRestorationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SuperDelegate+StateRestorationTests.swift"; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				EA65F99F1CBF06EB00CBA8E3 /* Info.plist */,
 				EA65F99D1CBF06EB00CBA8E3 /* SuperDelegateTests.swift */,
 				EAD4E9581CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift */,
+				3D7C141E206B029300986F1F /* SuperDelegate+LaunchItemTests.swift */,
 				EAD4E95A1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift */,
 				EAD4E95C1CC5AAFE005D8983 /* SuperDelegate+LocationEventsTests.swift */,
 				EAD4E95E1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift */,
@@ -305,6 +308,7 @@
 				EA4716821CC5DB3700DE3B99 /* SuperDelegate+UserActivityTests.swift in Sources */,
 				EAD4E9611CC5BB52005D8983 /* SuperDelegate+RemoteNotificationsTests.swift in Sources */,
 				EA47167E1CC5CB0E00DE3B99 /* SuperDelegate+ShortcutsTests.swift in Sources */,
+				3D7C141F206B029300986F1F /* SuperDelegate+LaunchItemTests.swift in Sources */,
 				EAD4E9591CC598ED005D8983 /* SuperDelegate+BluetoothTests.swift in Sources */,
 				EAD4E95F1CC5ADB5005D8983 /* SuperDelegate+OpenURLTests.swift in Sources */,
 				EAD4E95B1CC59E41005D8983 /* SuperDelegate+LocalNotificationsTests.swift in Sources */,

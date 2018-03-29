@@ -125,7 +125,7 @@ open class SuperDelegate: NSObject, UIApplicationDelegate {
                 launchItem = .none
             }
             
-        case .remoteNotification, .localNotification, .sourceApplication, .none:
+        case .remoteNotification, .localNotification, .sourceApplication, .unknown, .none:
             // Nothing to do.
             break
         }
@@ -210,7 +210,7 @@ open class SuperDelegate: NSObject, UIApplicationDelegate {
         case let .localNotification(item):
             launchOptionsLocalNotification = item
             
-        case .sourceApplication, .none:
+        case .sourceApplication, .unknown, .none:
             // Nothing to do.
             break
         }
