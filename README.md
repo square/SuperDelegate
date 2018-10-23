@@ -2,9 +2,9 @@
 
 [![CI Status](https://travis-ci.org/square/SuperDelegate.svg?branch=master)](https://travis-ci.org/square/SuperDelegate)
 [![Carthage Compatibility](https://img.shields.io/badge/carthage-✓-e2c245.svg)](https://github.com/Carthage/Carthage/)
-[![Version](https://img.shields.io/cocoapods/v/SuperDelegate.svg)](http://cocoadocs.org/docsets/SuperDelegate)
-[![License](https://img.shields.io/cocoapods/l/SuperDelegate.svg)](http://cocoadocs.org/docsets/SuperDelegate)
-[![Platform](https://img.shields.io/cocoapods/p/SuperDelegate.svg)](http://cocoadocs.org/docsets/SuperDelegate)
+[![Version](https://img.shields.io/cocoapods/v/SuperDelegate.svg)](https://cocoapods.org/pods/SuperDelegate)
+[![License](https://img.shields.io/cocoapods/l/SuperDelegate.svg)](https://cocoapods.org/pods/SuperDelegate)
+[![Platform](https://img.shields.io/cocoapods/p/SuperDelegate.svg)](https://cocoapods.org/pods/SuperDelegate)
 
 SuperDelegate provides a consistent App Delegate API across all iOS SDKs while protecting you from bugs in the application lifecycle.
 
